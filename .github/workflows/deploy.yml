@@ -14,6 +14,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_HOST }}
           script: |
             cd /var/www/tatamata
             git pull origin master
