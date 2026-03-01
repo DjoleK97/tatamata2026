@@ -1,0 +1,143 @@
+<?php
+
+require_once "includes/functions.php";
+require_once "classes/Database.php";
+
+
+if (isset($_POST['buy-course'])) {
+  $course_id = clean($_POST['course_id']);
+  $user_id = $_SESSION['user']->id;
+
+  $data = array(
+    "course_id" => $course_id,
+    "user_id" => $user_id,
+  );
+
+  if (Database::getInstance()->buyCourse($data)) {
+    $_SESSION['buy_course_success_message'] = '<div class="alert alert-warning alert-dismissible show" role="alert">
+    <strong>Potvrda uspešna! <i class="fas fa-check"></i></strong> Admin će proveriti vašu uplatu i odobriće Vam klipove nakon provere.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fas fa-times"></i></button>
+  </div>';
+  }
+}
+
+$courses = Database::getInstance()->getAllCourses();
+$grades = Database::getInstance()->getAllGrades();
+
+?>
+
+<?php include_once 'includes/header.php'; ?>
+
+<section id="kursevi">
+  <div class="container-fluid">
+
+    <?php printFormatedFlashMessage("buy_course_success_message"); ?>
+    <?php printFormatedFlashMessage("register_success_message"); ?>
+    <?php printFormatedFlashMessage("unauthorized_access"); ?>
+    <?php printFormatedFlashMessage("login_success_message"); ?>
+
+    <div class="row lewrapper">
+      <h1 class="kursevi-h1 text-white ps-0 pb-2 col-auto">
+        <svg class="kursevi-icon" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 478.6 372.14">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #fff;
+              }
+            </style>
+          </defs>
+          <title>KURSEVI</title>
+          <path class="cls-1" d="M319.13,131.46H425.69a5.1,5.1,0,1,0,0-10.2H319.13a5.1,5.1,0,0,0,0,10.2Z" transform="translate(-16.7 -69.93)" />
+          <path class="cls-1" d="M425.69,148.83H367.27a5.1,5.1,0,1,0,0,10.2h58.43a5.1,5.1,0,1,0,0-10.2Z" transform="translate(-16.7 -69.93)" />
+          <path class="cls-1" d="M319.13,159h18.7a5.1,5.1,0,1,0,0-10.2H319.13a5.1,5.1,0,0,0,0,10.2Z" transform="translate(-16.7 -69.93)" />
+          <path class="cls-1" d="M425.69,176.4h-20.1a5.1,5.1,0,1,0,0,10.2h20.11a5.1,5.1,0,1,0,0-10.2Z" transform="translate(-16.7 -69.93)" />
+          <path class="cls-1" d="M319.13,186.6H386.9a5.1,5.1,0,1,0,0-10.2H319.13a5.1,5.1,0,0,0,0,10.2Z" transform="translate(-16.7 -69.93)" />
+          <path class="cls-1" d="M480.51,387.64H464.64V186.93a68.75,68.75,0,0,0,9.68-34.9c0-45.27-45.71-82.1-101.9-82.1-23.34,0-44.87,6.35-62.07,17a5.06,5.06,0,0,0-.68,0H85.56a38.68,38.68,0,0,0-38.64,38.63v262.1H31.49A14.8,14.8,0,0,0,16.7,402.43v9.35A30.33,30.33,0,0,0,47,442.07H465a30.33,30.33,0,0,0,30.3-30.29v-9.35A14.8,14.8,0,0,0,480.51,387.64ZM260.27,356.48A14.32,14.32,0,1,1,246,370.85s0,0,0-.06A14.34,14.34,0,0,1,260.27,356.48Zm19.89,0H454.44v31.16H278.06a24.45,24.45,0,0,0,2.1-31.16ZM464.12,152c0,39.64-41.14,71.9-91.7,71.9-20.25,0-39.45-5.09-55.53-14.71a5.08,5.08,0,0,0-2.62-.73,4.17,4.17,0,0,0-.61,0l-43,5.17,17.9-26.94a5.08,5.08,0,0,0,.17-5.36,58.5,58.5,0,0,1-8-29.37c0-39.65,41.14-71.9,91.71-71.9S464.12,112.38,464.12,152ZM85.56,97.11H296.74c-16.3,14.55-26.23,33.82-26.23,54.92a68,68,0,0,0,7.83,31.65L256,217.25a5.11,5.11,0,0,0-.09,5.5,5,5,0,0,0,5,2.39l52.29-6.28c17.35,10,37.79,15.27,59.25,15.27,33.6,0,63.45-13.17,82-33.44V346.28H178.53v-60.6h70.22a19.76,19.76,0,1,0,0-39.52H163.87a39.52,39.52,0,1,0-52.39.47,44.66,44.66,0,0,0-38.15,44.12v55.53H57.12V125.54A28.47,28.47,0,0,1,85.56,97.11ZM103,295.23a5.1,5.1,0,0,0-5.1,5.1h0v46H83.53V290.75a34.43,34.43,0,0,1,34.39-34.39H248.75a9.56,9.56,0,0,1,0,19.12H173.43a5.1,5.1,0,0,0-5.1,5.1h0v65.7H108.09V300.33A5.1,5.1,0,0,0,103,295.23Zm34.41-49.07a29.31,29.31,0,1,1,29.32-29.31,29.31,29.31,0,0,1-29.32,29.31ZM57.12,356.48H240.39a24.46,24.46,0,0,0,2.09,31.16H57.12Zm428,55.3A20.12,20.12,0,0,1,465,431.87H47a20.12,20.12,0,0,1-20.1-20.09v-9.35a4.6,4.6,0,0,1,4.59-4.59h449a4.6,4.6,0,0,1,4.59,4.59Z" transform="translate(-16.7 -69.93)" />
+        </svg>
+        Kursevi
+      </h1>
+
+      <div class="col-auto skola-container">
+        <div id="osnovna-btn" class="skola col-auto d-inline-block <?php if (!Database::getInstance()->isUserLoggedIn()) echo 'active';
+                                                                    else if ($_SESSION['user']->school_type_id != "2" && $_SESSION['user']->school_type_id != '3') echo "active"; ?>">
+          osnovna<br>
+          škola
+        </div>
+        <div id="srednja-btn" class="skola col-auto d-inline-block <?php if (Database::getInstance()->isUserLoggedIn() && $_SESSION['user']->school_type_id == "2") echo "active"; ?>">
+          srednja<br>
+          škola
+        </div>
+        <div id="fakultet-btn" class="skola col-auto d-inline-block <?php if (Database::getInstance()->isUserLoggedIn() && $_SESSION['user']->school_type_id == "3") echo "active"; ?>">
+          Fakultet <br>
+        </div>
+      </div>
+
+      <div class="col-auto text-white ms-auto g-0 pretraga-col" style="width: 300px;">
+        <div class="input-group flex-nowrap">
+          <input type="text" class="form-control pretraga-input" placeholder="Pretraži...">
+          <button class="btn yellow-btn" style="pointer-events: none;" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="search-results w-100">
+        </div>
+      </div>
+    </div>
+
+    <!-- ULOGOVAN ILI NIJE -->
+    <?php foreach ($grades as $grade) : ?>
+      <?php if ($grade['grade_school_type_id' == 1] && $grade['grade_id'] <= 4) { ?>
+        <?php continue; ?>
+      <?php } ?>
+      <div class="row text-white mt-4 <?php if ($grade['grade_school_type_id'] == 1) echo "osnovnaskoladiv";
+                                      else if ($grade['grade_school_type_id'] == 2) echo 'srednjaskoladiv';
+                                      else echo 'fakultetskoladiv';                                       ?>">
+        <div class="col-12 g-0 d-flex mb-4">
+          <div class="grade-name col-auto me-3 mt-1">
+            <!-- Prvo gledamo da li je ulogovan, ako nije prikazi sve kurseve, ako jeste gledamo iz koje zemlje je -->
+            <?php if (isset($_SESSION['user'])) { ?>
+              <?php if (strtolower($_SESSION['user']->country) == 'cg' && strtolower($grade['grade_name']) != 'mala matura') { ?>
+                <?php echo $grade['grade_name'] ?? "Error"; ?>
+              <?php } else if (strtolower($_SESSION['user']->country) == 'srbija' && strtolower($grade['grade_name']) != 'crna gora') { ?>
+                <?php echo $grade['grade_name'] ?? "Error"; ?>
+              <?php } else { ?>
+                <?php echo $grade['grade_name'] ?? "Error"; ?>
+              <?php } ?>
+            <?php } else { ?>
+              <?php echo $grade['grade_name'] ?? "Error"; ?>
+            <?php } ?>
+          </div>
+          <div class="col">
+            <hr class="custom-hr">
+          </div>
+        </div>
+        <!-- OWL CAROSEL -->
+        <section id="kursevi-area">
+          <div class="owl-carousel owl-theme">
+            <?php foreach ($courses as $course) : ?>
+              <?php if ($course['grade_id'] == $grade['grade_id']) { ?>
+                <div class="item">
+                  <div class="course-col-container">
+                    <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>">
+                      <div class="course-img">
+                        <?php if ($course['live']) { ?>
+                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="Image error">
+                        <?php } else { ?>
+                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/upripremi.png" alt="Image error">
+                        <?php } ?>
+                      </div>
+                    </a>
+                    <div class="course-name text-center mt-2">
+                      <?php echo $course['name']; ?>
+                    </div>
+                  </div>
+                </div>
+              <?php } ?>
+            <?php endforeach; ?>
+          </div>
+        </section>
+        <!-- OWL CAROSEL -->
+      </div>
+    <?php endforeach; ?>
+
+  </div>
+</section>
+
+<?php include_once 'includes/footer.php'; ?>

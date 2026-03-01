@@ -1,0 +1,58 @@
+  ## SOURCE: http://www.developphp.com/video/Miscellaneous/Semantic-URL-htaccess-Tutorial-SEO-Friendly-and-Clean-Links
+
+  # Turn Rewrite Engine On
+  
+  RewriteEngine on  
+  
+  # NC makes the rule non case sensitive
+  # L makes this the last rule that this specific condition will match
+  # $ in the regular expression makes the matching stop so that "customblah" will not work
+  
+  # RewriteCond %{REQUEST_FILENAME} !-f
+  # RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+
+  # RewriteRule ^(registracija|prijava|odjava|kursevi|profil)$ $1.php [NC,L]
+
+    RewriteRule ^(.*)konsultacije$ usluga.php?name=konsultacije [NC,L]
+    
+    RewriteRule ^kupovina-kursa/([0-9]+)$ kupovina-kursa.php?id=$1 [NC,L]
+    RewriteRule ^kupovina-kursa-eng/([0-9]+)$ kupovina-kursa-eng.php?id=$1 [NC,L]
+
+    RewriteRule ^admin/user/([a-zA-Z0-9šđčćž]+)$ admin/user.php?id=$1 [NC,L]
+    RewriteRule ^admin/chapters$ admin/chapters.php [NC,L] ## Prikazi sve kurseve da izabere
+    RewriteRule ^admin/courses/([0-9]+)/chapters$ admin/chaptersForCourse.php?course_id=$1 [NC,L] ## Prikazi sve Chapters Za kurs.
+    RewriteRule ^admin/courses/([0-9]+)/chapters/([0-9]+)/clips$ admin/clipsForCourseAndChapter.php?course_id=$1&chapter_id=$2 [NC,L] ## Prikazi sve klipove za kurs i chapters
+    RewriteRule ^admin/clips$ admin/clips.php [NC,L] ## Prikazi sve kurseve da izabere
+    RewriteRule ^admin/userslogs/([0-9]+)$ admin/userslogs.php?page=$1 [NC,L]
+    RewriteRule ^([^\.0-9]+)$ $1.php [NC,L]
+    RewriteRule pocetna index.php [NC,L]
+    RewriteRule priprema-za-prijemni usluga.php?name=priprema-za-prijemni [NC,L]
+    RewriteRule priprema-za-pismene-i-kontrolne usluga.php?name=priprema-za-pismene-i-kontrolne [NC,L]
+    RewriteRule individualni-casovi usluga.php?name=individualni-casovi [NC,L]
+    RewriteRule grupni-casovi usluga.php?name=grupni-casovi [NC,L]
+    RewriteRule ^kurs/([0-9]+)$ kurs.php?id=$1 [NC,L]
+
+
+
+
+  #^((?!\/profile\/[a-zA-Z0-9]+).)*$
+  #^([^\.0-9]+)|^((?!\/profile\/[a-zA-Z0-9]+).)*$
+  
+  # Rewrite for article.php?id=1&title=Title-Goes-Here
+  # RewriteRule ^article/([0-9]+)/([0-9a-zA-Z_-]+)$ article.php?id=$1&title=$2 [NC,L]
+
+
+  #RewriteCond %{HTTP_REFERER} !^http://localhost/karagaca/videos/.*$ [NC]
+  #RewriteCond %{HTTP_REFERER} !^http://www.localhost/karagaca/videos/.*$ [NC]
+  #RewriteRule .(mp4|mp3|avi)$ - [F]
+
+
+## https://stackoverflow.com/a/43953920/9522864 ##
+
+  RewriteCond %{REQUEST_URI} \.(mp4|mp3|avi)$ [NC]
+  RewriteCond %{HTTP_REFERER} !^https://localhost/karagaca/.*$ [NC]
+  RewriteCond %{HTTP_REFERER} !^https://www.localhost/karagaca/.*$ [NC]
+  RewriteCond %{HTTP_REFERER} !^https://tatamata.rs/.*$ [NC]
+  RewriteCond %{HTTP_REFERER} !^https://www.tatamata.rs/.*$ [NC]
+  RewriteRule ^.* - [F,L]

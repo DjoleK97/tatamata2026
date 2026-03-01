@@ -1,0 +1,40 @@
+# Composer dependencies
+vendor/
+
+# Environment / credentials
+.env
+includes/env.php
+
+# SQL dumps (sensitive data)
+*.sql
+
+# Uploaded files
+uploads/*
+!uploads/.gitkeep
+
+# Videos (large binary files)
+videos/*
+!videos/.gitkeep
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# PHP error logs
+error_log
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentation (generated, ne treba u repozitorijumu)
+TataMata_Dokumentacija.docx
+todo.txt
+kurs.php
