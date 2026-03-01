@@ -6,17 +6,13 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/tatamata
-            git pull origin master
-            composer install --no-dev --no-interaction
-            sudo chown -R www-data:www-data /var/www/tatamata
-            sudo chmod -R 755 /var/www/tatamata
+      - name: Deploy
+        run: |
+          cd /var/www/tatamata
+          git fetch origin master
+          git reset --hard origin/master
+          composer install --no-dev --no-interaction
+          sudo chown -R www-data:www-data /var/www/tatamata
+          sudo chmod -R 755 /var/www/tatamata
