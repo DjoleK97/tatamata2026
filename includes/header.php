@@ -8,6 +8,16 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off") {
   exit;
 }
 
+// SEC-FIX: HTTP Security Headers
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: SAMEORIGIN");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Permissions-Policy: camera=(), microphone=(), geolocation=()");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+// Content Security Policy - dozvoljava CDN resurse koje projekat koristi
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://kit.fontawesome.com https://cdn.plyr.io https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plyr.io; img-src 'self' data: https:; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://ka-f.fontawesome.com https://www.google-analytics.com; media-src 'self'; frame-ancestors 'self';");
+
 $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/')); //  /prijava /registracija /index.php
 // echo $currentPage;
 ?>

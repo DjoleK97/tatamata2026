@@ -38,7 +38,7 @@ if (!empty($_FILES['files']['name'][0])) { // Da li je poslao neke fajlove
     $mail2->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
     $mail2->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail2->Username   = 'admin@tatamata.rs';                     // SMTP username
-    $mail2->Password   = 'pidyejretard123';                               // SMTP password
+    $mail2->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
     $mail2->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
     $mail2->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
@@ -132,7 +132,7 @@ if (!empty($_FILES['files']['name'][0])) { // Da li je poslao neke fajlove
     $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-    $mail->Password   = 'pidyejretard123';                               // SMTP password
+    $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
     $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 

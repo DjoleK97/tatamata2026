@@ -1,41 +1,58 @@
 <?php
 
 if (session_status() == PHP_SESSION_NONE) {
+  // SEC-FIX: Bezbedna konfiguracija sesije
+  session_set_cookie_params([
+    'lifetime' => defined('SESSION_LIFETIME') ? SESSION_LIFETIME : 3600,
+    'path'     => '/',
+    'secure'   => true,   // samo HTTPS
+    'httponly' => true,   // ne dostupno JS-u
+    'samesite' => 'Lax',
+  ]);
   session_start();
 }
 
+// SEC-FIX: Ucitaj kredencijale iz env.php (nije u git-u)
+if (file_exists(__DIR__ . '/../includes/env.php')) {
+  require_once __DIR__ . '/../includes/env.php';
+}
+
 class Database {
-  private $host; // Host
-  private $db_name; // DB Name
-  private $username; // DB Username
-  private $password; // DB Password
+  private $host;
+  private $db_name;
+  private $username;
+  private $password;
 
+  private static $instance = null;
+  public $connection = null;
 
-  private static $instance = null; // Instanca klase
-  public $connection = null; // Konekcija
+  // SEC-FIX: Dozvoljene kolone za deleteMultipleLoginInfo (whitelist)
+  private static $allowedLoginColumns = ['gpu', 'ram', 'cpu_cores', 'os', 'screen_resolution', 'timezone', 'color_depth', 'fonts'];
 
   private function __construct() {
-    if ($_SERVER['SERVER_NAME'] == "localhost") {
-      $this->host = "localhost"; // Host
-      $this->db_name = "karagaca"; // DB Name
-      $this->username = "root"; // DB Username
-      $this->password = ""; // DB Password
-    } else {
-      $this->host = "localhost"; // Host
-      $this->db_name = "tatamatars_main"; // DB Name
-      $this->username = "tatamatars_admin"; // DB Username
-      $this->password = "ilovemath123"; // DB Password
-    }
+    // SEC-FIX: Kredencijali se citaju iz konstanti (env.php), ne hardcoded
+    $this->host     = defined('DB_HOST') ? DB_HOST : 'localhost';
+    $this->db_name  = defined('DB_NAME') ? DB_NAME : 'karagaca';
+    $this->username = defined('DB_USER') ? DB_USER : 'root';
+    $this->password = defined('DB_PASS') ? DB_PASS : '';
+
     try {
-      $this->connection = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8', $this->username, $this->password);
-      $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->connection = new PDO(
+        'mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8',
+        $this->username,
+        $this->password
+      );
+      // SEC-FIX: Ne prikazivati greske u produkciji
+      if ($_SERVER['SERVER_NAME'] === 'localhost') {
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      } else {
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+      }
     } catch (PDOException $e) {
-      echo "<p class='alert mb-0 alert-danger'>PDO EXCEPTION: " . $e->getMessage() . "</p>";
-
-      exit();
+      // SEC-FIX: Log gresku, ne prikazuj korisniku detalje
+      error_log('[TataMata DB] Konekcija neuspesna: ' . $e->getMessage());
+      die('<div class="alert alert-danger">Greška pri konekciji sa bazom. Pokušajte ponovo.</div>');
     }
-
-    // $this->connection = mysqli_connect($this->host, $this->username, $this->password, $this->db_name);
   }
 
   public function getConnection() {
@@ -96,7 +113,8 @@ class Database {
     try {
       $data = (object) $data;
       $data->country = strtolower($data->country);
-      $data->password = md5(md5($data->password)); // Hashovanje sifre sa md5
+      // SEC-FIX: bcrypt umesto md5(md5()) - sigurno hashovanje
+      $data->password = password_hash($data->password, PASSWORD_BCRYPT, ['cost' => 12]);
       $query = Database::getInstance()->getConnection()->prepare("INSERT INTO user (email, password, firstname, lastname, phone_number, school_type_id, country) VALUES (?, ?, ?, ?, ?, ?, ?)");
       $result = $query->execute([
         $data->email,
@@ -202,16 +220,32 @@ class Database {
   public function loginUser($data) {
     try {
       $data = (object) $data;
-      $data->password = md5(md5($data->password));
-      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE email = :email AND password = :password");
-      $query->execute(array(
-        ':email' => $data->email,
-        ':password' => $data->password,
-      ));
 
+      // SEC-FIX: Dohvati korisnika samo po emailu, pa verifikuj lozinku odvojeno
+      // Ovo sprecava timing attack i podrzava migraciju sa md5 na bcrypt
+      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM user WHERE email = :email");
+      $query->execute([':email' => $data->email]);
       $user = $query->fetch();
 
-      if ($user) {
+      if (!$user) {
+        return false;
+      }
+
+      $passwordOk = false;
+
+      // SEC-FIX: Migracija - podrzavamo i stare md5 hash-eve i nove bcrypt
+      if (password_verify($data->password, $user['password'])) {
+        // Novi bcrypt hash - ok
+        $passwordOk = true;
+      } elseif ($user['password'] === md5(md5($data->password))) {
+        // Stari md5 hash - prihvati login, ali odmah migrirati na bcrypt
+        $passwordOk = true;
+        $newHash = password_hash($data->password, PASSWORD_BCRYPT, ['cost' => 12]);
+        $migQuery = Database::getInstance()->getConnection()->prepare("UPDATE user SET password = ? WHERE id = ?");
+        $migQuery->execute([$newHash, $user['id']]);
+      }
+
+      if ($passwordOk) {
         $user = (object) $user;
         $_SESSION['user'] = $user;
         Database::getInstance()->insertLoginDetails($data, $user->id);
@@ -292,7 +326,8 @@ class Database {
 
   public function updateUserPassword($id, $password) {
     try {
-      $password = md5(md5($password)); // Hashovanje sifre sa md5
+      // SEC-FIX: bcrypt umesto md5
+      $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
       $query = Database::getInstance()->getConnection()->prepare("UPDATE `user` SET password = :password WHERE id = :id");
       $result = $query->execute([
         ':password' => $password,
@@ -481,8 +516,9 @@ class Database {
 
   public function searchCourses($searchText) {
     try {
-      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM course c WHERE c.name LIKE '%$searchText%'");
-      $query->execute();
+      // SEC-FIX: Parametrizovani LIKE upit - sprecava SQL injection
+      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM course c WHERE c.name LIKE :search");
+      $query->execute([':search' => '%' . $searchText . '%']);
       $courses = $query->fetchAll();
 
       return $courses;
@@ -775,8 +811,10 @@ class Database {
 
   public function searchClips($searchText, $cid) {
     try {
-      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM `clip` c WHERE c.name LIKE '%$searchText%' OR c.description LIKE '%$searchText%' AND c.course_id = $cid");
-      $query->execute();
+      // SEC-FIX: Parametrizovani LIKE upit - sprecava SQL injection
+      // Takodje ispravljena greska u originalnom upitu: nedostajale su zagrade za OR/AND logiku
+      $query = Database::getInstance()->getConnection()->prepare("SELECT * FROM `clip` c WHERE (c.name LIKE :search OR c.description LIKE :search) AND c.course_id = :cid");
+      $query->execute([':search' => '%' . $searchText . '%', ':cid' => (int)$cid]);
       $clips = $query->fetchAll();
 
       return $clips;
@@ -1115,7 +1153,12 @@ class Database {
   public function deleteMultipleLoginInfo($data) {
     try {
       $data = (object) $data;
-      $query = Database::getInstance()->getConnection()->prepare("DELETE FROM `login_details` WHERE user_id = ? AND $data->column_name = ?");
+      // SEC-FIX: Whitelist dozvoljenih kolona - sprecava SQL injection kroz column_name
+      if (!in_array($data->column_name, self::$allowedLoginColumns, true)) {
+        error_log('[TataMata] Pokusaj SQL injection u deleteMultipleLoginInfo: ' . $data->column_name);
+        return false;
+      }
+      $query = Database::getInstance()->getConnection()->prepare("DELETE FROM `login_details` WHERE user_id = ? AND `{$data->column_name}` = ?");
       $result = $query->execute([
         $data->user_id,
         $data->column_value

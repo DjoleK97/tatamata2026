@@ -28,6 +28,8 @@ $id = clean($_GET['id']);
 $course = Database::getInstance()->getCourse($id);
 
 if (isset($_POST['contact'])) {
+  // SEC-FIX: CSRF zaštita
+  csrf_protect();
 
   $data = array(
     "course_id" => $id,
@@ -52,10 +54,10 @@ if (isset($_POST['contact'])) {
         //Server settings
         // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
         $mail2->isSMTP();                                            // Send using SMTP
-        $mail2->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
-        $mail2->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail2->Username   = 'admin@tatamata.rs';                     // SMTP username
-        $mail2->Password   = 'pidyejretard123';                               // SMTP password
+        $mail2->Host       = defined('SMTP_HOST') ? SMTP_HOST : 'mail.tatamata.rs';
+        $mail2->SMTPAuth   = true;
+        $mail2->Username   = defined('SMTP_USER') ? SMTP_USER : 'admin@tatamata.rs';
+        $mail2->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
         $mail2->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
         $mail2->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 

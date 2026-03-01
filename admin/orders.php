@@ -34,7 +34,7 @@ if (isset($_POST['confirm-purchase'])) {
       $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
       $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
       $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-      $mail->Password   = 'pidyejretard123';                               // SMTP password
+      $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
       $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 

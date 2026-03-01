@@ -1,9 +1,10 @@
 # Composer dependencies
 vendor/
 
-# Environment / credentials
+# Environment / credentials (nikada ne komitovati!)
 .env
 includes/env.php
+# includes/env.example.php  <- ovo IDE u git kao template
 
 # SQL dumps (sensitive data)
 *.sql

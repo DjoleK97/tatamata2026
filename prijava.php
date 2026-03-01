@@ -44,6 +44,9 @@ if (Database::getInstance()->isUserLoggedIn()) {
 }
 
 if (isset($_POST['login'])) {
+  // SEC-FIX: Verifikacija CSRF tokena
+  csrf_protect();
+
   $email = clean($_POST['email']);
   $password = clean($_POST['password']);
 
@@ -83,8 +86,11 @@ if (isset($_POST['login'])) {
       );
 
       if (Database::getInstance()->loginUser($data)) {
+        // SEC-FIX: Regenerisi session ID nakon uspesnog logina (sprecava session fixation)
+        session_regenerate_id(true);
+
         $_SESSION['login_success_message'] = '<div class="alert alert-warning alert-dismissible show mb-5" role="alert">
-                <strong>Prijava uspešna! <i class="fas fa-check"></i></strong> Dobrodošli ' . $_SESSION['user']->firstname . " " . $_SESSION['user']->lastname .
+                <strong>Prijava uspešna! <i class="fas fa-check"></i></strong> Dobrodošli ' . htmlspecialchars($_SESSION['user']->firstname) . " " . htmlspecialchars($_SESSION['user']->lastname) .
           '. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fas fa-times"></i></button>
               </div>';
 
@@ -107,7 +113,7 @@ if (isset($_POST['login'])) {
             $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
             $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-            $mail->Password   = 'pidyejretard123';                               // SMTP password
+            $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
@@ -148,7 +154,7 @@ if (isset($_POST['login'])) {
             $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
             $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-            $mail->Password   = 'pidyejretard123';                               // SMTP password
+            $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
@@ -189,7 +195,7 @@ if (isset($_POST['login'])) {
             $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
             $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-            $mail->Password   = 'pidyejretard123';                               // SMTP password
+            $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
@@ -231,7 +237,7 @@ if (isset($_POST['login'])) {
             $mail->Host       = 'mail.tatamata.rs';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
             $mail->Username   = 'admin@tatamata.rs';                     // SMTP username
-            $mail->Password   = 'pidyejretard123';                               // SMTP password
+            $mail->Password   = defined('SMTP_PASS') ? SMTP_PASS : '';  // SEC-FIX: iz env.php
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 25;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
@@ -260,7 +266,8 @@ if (isset($_POST['login'])) {
           }
         }
 
-        header("Location: " . clean($_POST['redirect']));
+        // SEC-FIX: Validacija redirect URL-a - sprecava open redirect
+        header("Location: " . safe_redirect(clean($_POST['redirect'])));
 
         exit;
       } else {
@@ -325,6 +332,7 @@ if (isset($_POST['login'])) {
             </div>
 
             <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
           </form>
         </div>

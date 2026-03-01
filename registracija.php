@@ -37,6 +37,9 @@ if ($penultimate == "kurs") {
 }
 
 if (isset($_POST['password'])) {
+  // SEC-FIX: CSRF zaštita
+  csrf_protect();
+
   $email = clean($_POST['email']);
   $password = clean($_POST['password']);
   $password2 = clean($_POST['password2']);
@@ -273,6 +276,7 @@ if (isset($_POST['password'])) {
             </div>
 
             <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
             <div class="line-container d-flex justify-content-between">
               <div class="line"></div>

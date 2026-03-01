@@ -1,4 +1,73 @@
 <?php
+
+// ============================================================
+// SEC-FIX: CSRF zaštita
+// ============================================================
+
+/**
+ * Generiše CSRF token i čuva ga u sesiji.
+ * Pozivati jednom po sesiji (ili po formi ako je potrebno).
+ */
+function csrf_generate(): string {
+  if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+  }
+  return $_SESSION['csrf_token'];
+}
+
+/**
+ * Vraća HTML hidden input sa CSRF tokenom.
+ * Dodati unutar svake <form> koja menja podatke.
+ */
+function csrf_field(): string {
+  return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(csrf_generate()) . '">';
+}
+
+/**
+ * Verifikuje CSRF token iz POST zahteva.
+ * Vraća true ako je validan, false ako nije.
+ */
+function csrf_verify(): bool {
+  if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token'])) {
+    return false;
+  }
+  return hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']);
+}
+
+/**
+ * Proverava CSRF i gasi skriptu ako nije validan.
+ * Koristiti na vrhu svakog POST handlera.
+ */
+function csrf_protect(): void {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_verify()) {
+    http_response_code(403);
+    error_log('[TataMata] CSRF token nevalidan - ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    die('<div class="alert alert-danger container mt-4">Nevažeći zahtev. Osvežite stranu i pokušajte ponovo.</div>');
+  }
+}
+
+// ============================================================
+// SEC-FIX: Validacija redirect URL-a (sprecava open redirect)
+// ============================================================
+
+/**
+ * Proverava da li je redirect URL bezbedan (samo interni).
+ * Vraća sigurnu fallback putanju ako nije.
+ */
+function safe_redirect(string $url, string $fallback = 'pocetna'): string {
+  // Dozvoljeni prefiks - mora biti isti host
+  $baseUrl = (defined('BASE_URL') ? BASE_URL : '/');
+  if (strpos($url, $baseUrl) === 0 || strpos($url, '/') === 0) {
+    // Proveri da ne sadrzi protokol (http:// ili //)
+    if (!preg_match('/^(https?:)?\/\//i', ltrim($url, $baseUrl))) {
+      return $url;
+    }
+  }
+  return $baseUrl . $fallback;
+}
+
+// ============================================================
+
 function clean($input) {
   $input = trim($input);
   $input = str_replace('"', "", $input);
