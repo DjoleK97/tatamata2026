@@ -10,6 +10,7 @@ jobs:
     steps:
       - name: Deploy
         run: |
+          sudo chown -R $USER:$USER /var/www/tatamata
           cd /var/www/tatamata
           git fetch origin master
           git reset --hard origin/master
