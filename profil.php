@@ -86,72 +86,100 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
 <?php include_once 'includes/header.php'; ?>
 
 <div class="container" id="profile-page">
-  <div class="row">
-    <div class="col-md-8 offset-md-2 profile-div">
+  <div class="row g-4">
+
+    <!-- Sidebar navigacija -->
+    <div class="col-lg-3">
+      <div class="profil-sidebar-nav">
+        <a href="<?php echo BASE_URL; ?>profil" class="active"><i class="far fa-user"></i> Profil</a>
+        <a href="<?php echo BASE_URL; ?>mojikursevi"><i class="fas fa-play-circle"></i> Moji kursevi</a>
+        <a href="<?php echo BASE_URL; ?>transakcije"><i class="fas fa-euro-sign"></i> Transakcije</a>
+      </div>
+    </div>
+
+    <!-- Glavni sadrzaj -->
+    <div class="col-lg-9">
+
+      <!-- Profil header kartica -->
+      <div class="profil-header-karta">
+        <div class="profil-header-avatar"><i class="far fa-user"></i></div>
+        <h2><?php echo htmlspecialchars($_SESSION['user']->firstname . ' ' . $_SESSION['user']->lastname); ?></h2>
+        <p class="text-muted"><?php echo htmlspecialchars($_SESSION['user']->email); ?></p>
+        <span class="bedz-aktivno"><i class="fas fa-check-circle"></i> Aktivan nalog</span>
+      </div>
 
       <?php printFormatedFlashMessage("change_password_failed_message"); ?>
       <?php printFormatedFlashMessage("change_password_success_message"); ?>
       <?php printFormatedFlashMessage("change_profile_success_message"); ?>
 
-      <ul class="list-group list-group-flush">
-        <li class="mt-2 list-group-item"><span class="profile-span">Ime: </span><?php echo $_SESSION['user']->firstname; ?></li>
-        <li class="list-group-item"><span class="profile-span">Prezime: </span><?php echo $_SESSION['user']->lastname; ?></li>
-        <li class="list-group-item"><span class="profile-span">Broj telefona: </span><?php echo $_SESSION['user']->phone_number; ?></li>
-        <li class="list-group-item"><span class="profile-span">Email: </span><?php echo $_SESSION['user']->email; ?></li>
-        <li class="list-group-item"><span class="profile-span">Nivo obrazovanja: </span>
-          <form method="POST">
+      <!-- Licni podaci -->
+      <div class="profile-div mb-4">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-user me-2" style="color:var(--plava);"></i> Licni podaci</h3>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><span class="profile-span">Ime: </span><?php echo htmlspecialchars($_SESSION['user']->firstname); ?></li>
+          <li class="list-group-item"><span class="profile-span">Prezime: </span><?php echo htmlspecialchars($_SESSION['user']->lastname); ?></li>
+          <li class="list-group-item"><span class="profile-span">Broj telefona: </span><?php echo htmlspecialchars($_SESSION['user']->phone_number); ?></li>
+          <li class="list-group-item"><span class="profile-span">Email: </span><?php echo htmlspecialchars($_SESSION['user']->email); ?></li>
+        </ul>
+      </div>
+
+      <!-- Nivo obrazovanja -->
+      <div class="profile-div mb-4">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-graduation-cap me-2" style="color:var(--plava);"></i> Nivo obrazovanja</h3>
+        <form method="POST">
+          <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
+          <select name="school_type_id" class="form-select mb-3" aria-label="Nivo obrazovanja">
+            <?php foreach ($schoolTypes as $schoolType) : ?>
+              <option value="<?php echo $schoolType['school_type_id'] ?? "1"; ?>" <?php if ($schoolType['school_type_id'] == $_SESSION['user']->school_type_id) echo 'selected'; ?>><?php echo $schoolType['school_type_name'] ?? "Error"; ?></option>
+            <?php endforeach; ?>
+            <option value="NULL" <?php if ($_SESSION['user']->school_type_id == "NULL") echo 'selected'; ?>>Ne zelim da se izjasnim</option>
+          </select>
+          <button name='update-profile' class="btn btn-primary" type="submit">
+            Sacuvaj izmenu
+          </button>
+        </form>
+      </div>
+
+      <!-- Bezbednost -->
+      <div class="profile-div">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-shield-alt me-2" style="color:var(--plava);"></i> Bezbednost</h3>
+        <p class="mb-3">
+          <button class="btn btn-outline-plava" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-key me-1"></i> Promeni sifru
+          </button>
+        </p>
+        <div class="collapse <?php if ($displayCollapse) {
+                                echo 'show';
+                                $displayCollapse = false;
+                              } ?>" id="collapseExample">
+          <form method="POST" class="mb-2" style="max-width:480px;">
             <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
-            <select name="school_type_id" class="form-select" aria-label="Default select example">
-              <?php foreach ($schoolTypes as $schoolType) : ?>
-                <option value="<?php echo $schoolType['school_type_id'] ?? "1"; ?>" <?php if ($schoolType['school_type_id'] == $_SESSION['user']->school_type_id) echo 'selected'; ?>><?php echo $schoolType['school_type_name'] ?? "Error"; ?></option>
-              <?php endforeach; ?>
-              <option value="NULL" <?php if ($_SESSION['user']->school_type_id == "NULL") echo 'selected'; ?>>Ne želim da se izjasnim</option>
-            </select>
-            <button name='update-profile' class="btn btn-primary zutob2" style="margin-top: .5rem; margin-bottom: .5rem;" type="submit">
-              Promeni nivo obrazovanja
-            </button>
-          </form>
-        </li>
-        <li class="list-group-item">
-          <p class="mb-0">
-            <button class="btn btn-primary zutob2" style="margin-top: .5rem; margin-bottom: .5rem;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Promeni šifru
-            </button>
-          </p>
-          <div class="mt-2 collapse <?php if ($displayCollapse) {
-                                      echo 'show';
-                                      $displayCollapse = false;
-                                    } ?>" id="collapseExample">
-            <div class="card card-body">
-              <form method="POST" class="mb-2">
-                <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
-                <div class="mb-3">
-                  <label class="form-label">Stara šifra <strong class="text-danger">*</strong></label>
-                  <input name="old_password" type="password" class="form-control <?php if (isset($errors['old_password'])) echo 'is-invalid'; ?>" placeholder="Unesite staru šifru">
-                  <?php echo $errors['old_password'] ?? ""; ?>
-                </div>
-
-                <div class="mb-3">
-                  <label class="form-label">Nova šifra <strong class="text-danger">*</strong></label>
-                  <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite novu šifru">
-                  <?php echo $errors['password'] ?? ""; ?>
-                  <?php echo $errors['password_confirm'] ?? ""; ?>
-                </div>
-
-                <div class="mb-3">
-                  <label class="form-label">Potvrda nove šifre <strong class="text-danger">*</strong></label>
-                  <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite novu šifru">
-                  <?php echo $errors['password2'] ?? ""; ?>
-                </div>
-
-                <button name="change-password" type="submit" class="zutob2 btn btn-primary d-block w-100 mt-4">Potvrdi</button>
-
-              </form>
+            <div class="mb-3">
+              <label class="form-label">Stara sifra <strong class="text-danger">*</strong></label>
+              <input name="old_password" type="password" class="form-control <?php if (isset($errors['old_password'])) echo 'is-invalid'; ?>" placeholder="Unesite staru sifru">
+              <?php echo $errors['old_password'] ?? ""; ?>
             </div>
-          </div>
-        </li>
-      </ul>
+
+            <div class="mb-3">
+              <label class="form-label">Nova sifra <strong class="text-danger">*</strong></label>
+              <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite novu sifru">
+              <?php echo $errors['password'] ?? ""; ?>
+              <?php echo $errors['password_confirm'] ?? ""; ?>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Potvrda nove sifre <strong class="text-danger">*</strong></label>
+              <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite novu sifru">
+              <?php echo $errors['password2'] ?? ""; ?>
+            </div>
+
+            <button name="change-password" type="submit" class="btn btn-primary d-block w-100 mt-4">Potvrdi promenu</button>
+
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

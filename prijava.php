@@ -286,85 +286,101 @@ if (isset($_POST['login'])) {
 
 
 
-<!-- -------- PRIJAVE ---------- -->
+<!-- -------- PRIJAVA ---------- -->
 <section id="prijave" class="login-form">
 
-
-
-  <div class="container">
-    <div class="row justify-content-center">
-
-      <div class="col-lg-6 col-md-8 col-sm-10 col-10 g-0">
-
-        <?php printFormatedFlashMessage("reset_password_success_message"); ?>
-        <?php printFormatedFlashMessage("logout_success_message"); ?>
-        <?php echo $errors['wrong_combination'] ?? ""; ?>
-
-        <div class="login-form-container">
-          <h1><i class="fas fa-sign-in-alt me-2" style="color:var(--plava);"></i> Prijava</h1>
-          <form id="login-form" method="POST">
-            <div class="mb-3">
-              <label class="form-label"><i class="far fa-envelope"></i> Email</label>
-              <div class="input-ikona">
-                <i class="far fa-envelope"></i>
-                <input id="email" name="email" type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid';
-                                                                                else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
-              </div>
-              <?php echo $errors['email'] ?? ""; ?>
-            </div>
-            <div class="mb-3">
-              <label class="form-label"><i class="fas fa-lock"></i> Šifra</label>
-              <div class="input-ikona">
-                <i class="fas fa-lock"></i>
-                <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
-              </div>
-              <?php echo $errors['password'] ?? ""; ?>
-              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru mt-2 d-inline-block text-decoration-none">Zaboravili ste šifru?</a>
-            </div>
-
-            <div class="d-grid mt-4">
-              <button name="login" id="login-btn" type="submit" class="btn btn-primary btn-lg">
-                <i class="fas fa-sign-in-alt me-2"></i> Prijavi se
-              </button>
-            </div>
-
-            <div class="line-container d-flex justify-content-between">
-              <div class="line"></div>
-              <div class="ili mx-1">ili</div>
-              <div class="line"></div>
-            </div>
-
-            <div class="not-registered-container d-flex justify-content-between align-items-center">
-              <p class="mb-0 d-inline-block niste-reg">Nemate nalog?</p>
-              <a href="<?php echo BASE_URL . 'registracija'; ?>">
-                <button type="button" role="button" class="btn btn-outline-secondary">
-                  <i class="fas fa-user-plus me-1"></i> Novi korisnik
-                </button>
-              </a>
-            </div>
-
-            <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
-            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
-
-          </form>
-        </div>
-
-        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva);">
-          <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
-          <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
-        </div>
-
-        <div class="mt-4 text-center go-back">
-          <a href="<?php echo BASE_URL . $redirectTo; ?>">
-            <i class="fas fa-arrow-left"></i> Odustani
-          </a>
-        </div>
-
-
+  <!-- Levi panel - brending -->
+  <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
+    <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
+    <h2>Matematika moze<br><span class="highlight">da bude laka</span></h2>
+    <div class="auth-stats">
+      <div class="auth-stat">
+        <span class="auth-stat-num"><?php echo getAge('2015-09-15'); ?>+</span>
+        <span class="auth-stat-lbl">god. iskustva</span>
+      </div>
+      <div class="auth-stat">
+        <span class="auth-stat-num">90+</span>
+        <span class="auth-stat-lbl">ucenika</span>
+      </div>
+      <div class="auth-stat">
+        <span class="auth-stat-num">87%</span>
+        <span class="auth-stat-lbl">uspesnost</span>
       </div>
     </div>
   </div>
+
+  <!-- Desni panel - forma -->
+  <div class="auth-panel-desno">
+
+      <?php printFormatedFlashMessage("reset_password_success_message"); ?>
+      <?php printFormatedFlashMessage("logout_success_message"); ?>
+      <?php echo $errors['wrong_combination'] ?? ""; ?>
+
+      <div class="login-form-container">
+        <h1><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Prijava</h1>
+        <p class="auth-subtitle">Dobrodosao nazad. Prijavi se da nastavis sa ucenjem.</p>
+        <form id="login-form" method="POST">
+          <div class="mb-4">
+            <label class="form-label"><i class="far fa-envelope"></i> Email</label>
+            <div class="input-ikona">
+              <i class="far fa-envelope"></i>
+              <input id="email" name="email" type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid';
+                                                                              else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+            </div>
+            <?php echo $errors['email'] ?? ""; ?>
+          </div>
+          <div class="mb-3">
+            <label class="form-label"><i class="fas fa-lock"></i> Sifra</label>
+            <div class="input-ikona">
+              <i class="fas fa-lock"></i>
+              <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
+            </div>
+            <?php echo $errors['password'] ?? ""; ?>
+            <div class="text-end mt-2">
+              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru text-decoration-none">Zaboravili ste sifru?</a>
+            </div>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button name="login" id="login-btn" type="submit" class="btn btn-primary btn-lg">
+              Prijavi se <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+
+          <div class="line-container d-flex justify-content-between">
+            <div class="line"></div>
+            <div class="ili mx-1">ili</div>
+            <div class="line"></div>
+          </div>
+
+          <div class="not-registered-container d-flex justify-content-between align-items-center">
+            <p class="mb-0 d-inline-block niste-reg">Nemas nalog?</p>
+            <a href="<?php echo BASE_URL . 'registracija'; ?>">
+              <button type="button" role="button" class="btn btn-outline-secondary">
+                <i class="fas fa-user-plus me-1"></i> Kreiraj nalog
+              </button>
+            </a>
+          </div>
+
+          <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
+          <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
+
+        </form>
+      </div>
+
+      <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-500);">
+        <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
+        <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
+      </div>
+
+      <div class="mt-4 text-center go-back">
+        <a href="<?php echo BASE_URL . $redirectTo; ?>">
+          <i class="fas fa-arrow-left"></i> Nazad na sajt
+        </a>
+      </div>
+
+  </div>
 </section>
-<!-- -------- PRIJAVE ---------- -->
+<!-- -------- PRIJAVA ---------- -->
 
 <?php include 'includes/footer.php'; ?>

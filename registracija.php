@@ -146,21 +146,43 @@ if (isset($_POST['password'])) {
 <?php include 'includes/header.php'; ?>
 
 <!-- -------- REGISTRACIJA ---------- -->
-<section id="prijave" class="registracija mt-4 mb-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-8 col-sm-10 col-10 g-0">
+<section id="prijave" class="login-form">
+  <div class="row g-0" style="min-height:100vh;">
 
-        <ul id="progressbar" class="text-center mt-5 p-0">
-          <li class="active register-progress-item" id="account"><strong>Osnovno</strong></li>
-          <li class="register-progress-item" id="personal"><strong>Nalog</strong></li>
-          <li class="register-progress-item" id="confirm"><strong>Kraj</strong></li>
-        </ul> <!-- fieldsets -->
+    <!-- Levi panel (branding) -->
+    <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
+      <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
+      <h2>Matematika moze<br>da bude <span class="highlight">laka</span></h2>
+      <div class="auth-stats">
+        <div class="auth-stat">
+          <span class="auth-stat-num">40+</span>
+          <span class="auth-stat-lbl">Kurseva</span>
+        </div>
+        <div class="auth-stat">
+          <span class="auth-stat-num">2000+</span>
+          <span class="auth-stat-lbl">Ucenika</span>
+        </div>
+        <div class="auth-stat">
+          <span class="auth-stat-num">500+</span>
+          <span class="auth-stat-lbl">Video lekcija</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desni panel (forma) -->
+    <div class="col-lg-7 auth-panel-desno">
+      <div style="max-width:520px; width:100%;">
+
+        <ul id="progressbar" class="text-center p-0">
+          <li class="active register-progress-item" id="account"><strong>Licni podaci</strong></li>
+          <li class="register-progress-item" id="personal"><strong>Email i sifra</strong></li>
+          <li class="register-progress-item" id="confirm"><strong>Potvrda</strong></li>
+        </ul>
 
         <div class="login-form-container">
 
-          <h1 class="mb-1"><i class="fas fa-user-plus me-2" style="color:var(--plava);"></i> Novi korisnik</h1>
-          <p class="mb-4" style="color:var(--siva);">Polja označena <strong class="text-danger">*</strong> su obavezna.</p>
+          <h1 class="mb-1"><i class="fas fa-user-plus me-2" style="color:var(--plava);"></i> Kreiraj nalog</h1>
+          <p class="auth-subtitle">Napravi nalog i pocni da ucis matematiku.</p>
 
           <?php echo $errors['taken_email'] ?? ""; ?>
 
@@ -296,9 +318,9 @@ if (isset($_POST['password'])) {
           </form>
         </div>
 
-        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva);">
+        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-700);">
           <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
-          <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
+          <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
         </div>
 
         <div class="mt-4 text-center go-back">
@@ -309,6 +331,7 @@ if (isset($_POST['password'])) {
 
       </div>
     </div>
+
   </div>
 </section>
 <!-- -------- REGISTRACIJA ---------- -->

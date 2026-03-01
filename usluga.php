@@ -134,133 +134,124 @@ if (isset($_POST['usluga-contact'])) {
 <?php include_once 'includes/header.php'; ?>
 
 
-<section id="usluga">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 col-md-10 offset-md-1 ps-0">
+<section id="kursevi" class="kurs">
+  <div class="container-fluid px-4">
 
-        <?php printFormatedFlashMessage("usluge_contact_fail"); ?>
-        <?php printFormatedFlashMessage("usluge_contact_success"); ?>
+    <!-- Breadcrumb -->
+    <div class="kurs-breadcrumb">
+      <a href="<?php echo BASE_URL; ?>pocetna#usluge">Usluge</a>
+      <span> / </span>
+      <?php echo htmlspecialchars($uslugaNAME); ?>
+    </div>
 
+    <?php printFormatedFlashMessage("usluge_contact_fail"); ?>
+    <?php printFormatedFlashMessage("usluge_contact_success"); ?>
 
-        <h1 class="text-white text-center fw-bold mb-3 d-inline-block mx-auto"><?php echo $uslugaNAME ?>
-          <hr class="hr">
-        </h1>
+    <div class="row mt-3">
+      <!-- Leva kolona: Video + Opis -->
+      <div class="col-lg-8 mb-4">
 
-        <video id="usluga-video" class="video" width="100%" height="auto" controls disablepictureinpicture oncontextmenu="return false;" controlsList="nodownload">
-          <source src="<?php echo BASE_URL . "videos/" . $uslugaVIDEO; ?>" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+        <h1 class="mb-3 animiraj" style="font-size:1.6rem;"><?php echo $uslugaNAME ?></h1>
 
-        <!-- CLIP DESCRIPTION -->
-        <div class="card mt-4 clip-descc">
-          <div class="card-body">
-            <h4 class="card-title">Opis usluge:</h4>
-            <hr class="hr">
-            <p class="card-text clip-description"><?php echo $uslugaDESC; ?></p>
-          </div>
+        <div class="animiraj">
+          <video id="usluga-video" class="video" width="100%" height="auto" style="border-radius:var(--radius-lg);" controls disablepictureinpicture oncontextmenu="return false;" controlsList="nodownload">
+            <source src="<?php echo BASE_URL . "videos/" . $uslugaVIDEO; ?>" type="video/mp4">
+          </video>
         </div>
 
-        <?php if ($usluga == 'priprema-za-prijemni') { ?>
-          <div class="login-form-container w-75 wurf">
+        <!-- Opis usluge -->
+        <div class="profile-div mt-4 animiraj">
+          <h4 style="font-size:1.05rem; font-weight:700; margin-bottom:12px;">
+            <i class="fas fa-align-left me-2" style="color:var(--plava);"></i> Opis usluge
+          </h4>
+          <hr class="hr">
+          <p style="color:var(--siva-700); line-height:1.85; font-size:.95rem;"><?php echo $uslugaDESC; ?></p>
+        </div>
 
-            <h1 class="mb-1">Prijava za BESPLATAN probni čas</h1>
-            <p class="mb-4">Polja označena <strong class="text-danger">*</strong> su obavezna.</p>
+      </div>
+
+      <!-- Desna kolona: Kontakt forma -->
+      <div class="col-lg-4">
+
+        <?php if ($usluga == 'priprema-za-prijemni') { ?>
+          <div class="login-form-container animiraj">
+            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:4px;">Prijava za probni cas</h3>
+            <p class="auth-subtitle" style="margin-bottom:20px;">Besplatno. Polja sa <strong class="text-danger">*</strong> su obavezna.</p>
 
             <form method="POST">
 
               <?php if (Database::getInstance()->isUserLoggedIn()) { ?>
-
-                <div class="mb-4">
-                  <label class="form-label"> <i class="far fa-user"></i>Ime i prezime</label>
+                <div class="mb-3">
+                  <label class="form-label"><i class="far fa-user"></i> Ime i prezime</label>
                   <input id="contact-name" readonly name="firstname" type="text" class="form-control" value="<?php echo $_SESSION['user']->firstname . " " . $_SESSION['user']->lastname; ?>">
                 </div>
-
-                <div class="mb-4">
+                <div class="mb-3">
                   <label class="form-label"><i class="far fa-envelope"></i> Email</label>
-                  <input id="contact-email" readonly name="email" type="email" class="form-control" placeholder="Unesite email" value="<?php echo $_SESSION['user']->email ?? ""; ?>">
+                  <input id="contact-email" readonly name="email" type="email" class="form-control" value="<?php echo $_SESSION['user']->email ?? ""; ?>">
                 </div>
-
               <?php } else { ?>
-
-                <div class="mb-4">
+                <div class="mb-3">
                   <label class="form-label">Ime i prezime <strong class="text-danger">*</strong></label>
                   <input name="firstname" type="text" class="form-control <?php if (isset($errors['firstname'])) echo 'is-invalid';
                                                                           else if (isset($firstname)) echo 'is-valid'; ?>" placeholder="Unesi ime i prezime" value="<?php echo $firstname ?? ""; ?>">
                   <?php echo $errors['firstname'] ?? ""; ?>
                 </div>
-
-                <div class="mb-4">
+                <div class="mb-3">
                   <label class="form-label">Email <strong class="text-danger">*</strong></label>
                   <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['taken_email'])) echo 'is-invalid';
                                                                         else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesi email" value="<?php echo $email ?? ""; ?>">
                   <?php echo $errors['email'] ?? ""; ?>
                 </div>
-
               <?php } ?>
 
-              <div class="mb-4">
-                <label class="form-label">Pripremu za nastavu ću pratiti preko <strong class="text-danger">*</strong></label>
+              <div class="mb-3">
+                <label class="form-label">Pratim preko <strong class="text-danger">*</strong></label>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" value="Racunara / Laptopa" name="pratim-preko" checked>
-                  <label class="form-check-label">
-                    Računara / Laptopa (preporučeno)
-                  </label>
+                  <label class="form-check-label" style="font-size:.9rem;">Racunar / Laptop</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" value="Telefona / Tableta" name="pratim-preko">
-                  <label class="form-check-label">
-                    Telefona / Tableta
-                  </label>
+                  <label class="form-check-label" style="font-size:.9rem;">Telefon / Tablet</label>
                 </div>
               </div>
 
-              <!-- <div class="mb-4">
-                <label class="form-label">U koju osnovnu školu ideš <strong class="text-danger">*</strong></label>
-                <input name="skola" type="text" class="form-control <?php //if (isset($errors['skola'])) echo 'is-invalid';
-                                                                    //else if (isset($skola)) echo 'is-valid'; 
-                                                                    ?>" placeholder="Unesi ime škole" value="<?php //echo $skola ?? ""; 
-                                                                                                              ?>">
-                <?php //echo $errors['skola'] ?? ""; 
-                ?>
-              </div> -->
-
-
-              <?php if (Database::getInstance()->isUserLoggedIn()) { ?>
-
-                <div class="mb-4">
-                  <label class="form-label">Broj telefona</label>
-                  <div class="form-text text-white">
-                    Mozeš ostaviti tvoj broj ukoliko ti je lakše da komuniciramo preko Viber-a / WhatsApp-a nego preko E-maila. (Ukoliko ti odgovara komunikacija preko email-a ostavi ovo polje prazno).
-                  </div>
-                  <input readonly name="phone" type="text" class="form-control <?php if (isset($errors['phone'])) echo 'is-invalid';
-                                                                                else if (isset($phone)) echo 'is-valid'; ?>" placeholder="Unesi broj telefona" value="<?php echo $_SESSION['user']->phone_number ?? ""; ?>">
-                  <?php echo $errors['phone'] ?? ""; ?>
-                </div>
-
-              <?php } else { ?>
-
-                <div class="mb-4">
-                  <label class="form-label">Broj telefona</label>
-                  <div class="form-text text-white">
-                    Mozeš ostaviti tvoj broj ukoliko ti je lakše da komuniciramo preko Viber-a / WhatsApp-a nego preko E-maila. (Ukoliko ti odgovara komunikacija preko email-a ostavi ovo polje prazno).
-                  </div>
+              <div class="mb-3">
+                <label class="form-label">Broj telefona</label>
+                <p style="font-size:.78rem; color:var(--siva-700); margin-bottom:6px;">Opciono, za komunikaciju preko Viber-a / WhatsApp-a.</p>
+                <?php if (Database::getInstance()->isUserLoggedIn()) { ?>
+                  <input readonly name="phone" type="text" class="form-control" value="<?php echo $_SESSION['user']->phone_number ?? ""; ?>">
+                <?php } else { ?>
                   <input name="phone" type="text" class="form-control <?php if (isset($errors['phone'])) echo 'is-invalid';
                                                                       else if (isset($phone)) echo 'is-valid'; ?>" placeholder="Unesi broj telefona" value="<?php echo $phone ?? ""; ?>">
                   <?php echo $errors['phone'] ?? ""; ?>
-                </div>
+                <?php } ?>
+              </div>
 
-              <?php } ?>
-
-
-              <button name="usluga-contact" type="submit" class="register-btn btn btn-primary scale-btn-2">Pošalji <i class="fas fa-check"></i></button>
+              <button name="usluga-contact" type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-paper-plane me-2"></i> Posalji prijavu
+              </button>
             </form>
           </div>
         <?php } ?>
 
-        <p class="text-white mt-5 text-center">Za sva dodatna pitanja javite se putem <a href="<?php echo BASE_URL ?>pocetna#kontakt" class="text-decoration-none kontakt-forme-link" target="_blank">kontakt forme</a>.</p>
+        <!-- Info kartica -->
+        <div class="kontakt-info-karta mt-4 animiraj">
+          <h3>Imas pitanja?</h3>
+          <div class="kontakt-info-stavka">
+            <i class="fas fa-envelope"></i>
+            <span>info@tatamata.rs</span>
+          </div>
+          <div class="kontakt-info-stavka">
+            <i class="fas fa-clock"></i>
+            <span>Odgovaramo u roku od 24h</span>
+          </div>
+          <p style="font-size:.85rem; color:var(--siva-700); margin-top:16px;">
+            Ili nam se javi putem <a href="<?php echo BASE_URL ?>pocetna#kontakt" class="kontakt-forme-link">kontakt forme</a>.
+          </p>
+        </div>
 
-        <div class="mt-4 text-white text-center go-back">
+        <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL; ?>pocetna#usluge">
             <i class="fas fa-arrow-left"></i> Nazad na usluge
           </a>
@@ -268,6 +259,7 @@ if (isset($_POST['usluga-contact'])) {
 
       </div>
     </div>
+
   </div>
 </section>
 

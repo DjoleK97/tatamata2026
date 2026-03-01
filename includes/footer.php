@@ -3,26 +3,60 @@
 
 <footer id="footer">
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-auto">
+    <div class="row g-4">
 
-        <div id="icons" class="d-flex mb-4">
-          <a class="icon-link" target="_blank" href="https://www.youtube.com/c/TataMATA/" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a class="icon-link" target="_blank" href="https://www.instagram.com/tatamata.casovi/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a class="icon-link" target="_blank" href="https://www.tiktok.com/@callmetatamata?lang=en" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <!-- Brand kolona -->
+      <div class="col-lg-4 col-md-6">
+        <a href="<?php echo BASE_URL; ?>pocetna">
+          <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="footer-logo">
+        </a>
+        <p class="footer-opis">Online video kursevi matematike za ucenike osnovnih i srednjih skola. Uci sopstvenim tempom, sa razumevanjem.</p>
+        <div class="footer-socijalne">
+          <a href="https://www.youtube.com/c/TataMATA/" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://www.instagram.com/tatamata.casovi/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@callmetatamata" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
         </div>
-
-        <div id="terms" class="d-flex justify-content-center mb-3">
-          <p><a target="_blank" href="<?php echo BASE_URL; ?>uslovi-koriscenja">Uslovi korišćenja</a></p>
-          <p class="ms-4"><a target="_blank" href="<?php echo BASE_URL; ?>politika-privatnosti">Politika privatnosti</a></p>
-        </div>
-
-        <div id="copyright">
-          <p>TataMata &copy; <?php echo date("Y"); ?></p>
-          <p>Napravio <a target="_blank" class="text-decoration-none pixelate" href="https://pixelate.rs/"><strong>Pixelate</strong></a></p>
-        </div>
-
       </div>
+
+      <!-- Navigacija kolona -->
+      <div class="col-lg-2 col-md-3 col-6">
+        <h4 class="footer-naslov">Navigacija</h4>
+        <ul class="footer-linkovi">
+          <li><a href="<?php echo BASE_URL; ?>pocetna">Pocetna</a></li>
+          <li><a href="<?php echo BASE_URL; ?>kursevi">Kursevi</a></li>
+          <li><a href="<?php echo BASE_URL; ?>pocetna#usluge">Usluge</a></li>
+          <li><a href="<?php echo BASE_URL; ?>pocetna#faq">FAQ</a></li>
+          <li><a href="<?php echo BASE_URL; ?>pocetna#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+
+      <!-- Pravno kolona -->
+      <div class="col-lg-2 col-md-3 col-6">
+        <h4 class="footer-naslov">Pravno</h4>
+        <ul class="footer-linkovi">
+          <li><a href="<?php echo BASE_URL; ?>uslovi-koriscenja" target="_blank">Uslovi koriscenja</a></li>
+          <li><a href="<?php echo BASE_URL; ?>politika-privatnosti" target="_blank">Politika privatnosti</a></li>
+        </ul>
+      </div>
+
+      <!-- Kontakt kolona -->
+      <div class="col-lg-4 col-md-6">
+        <h4 class="footer-naslov">Kontakt</h4>
+        <p class="footer-kontakt-info">
+          <i class="fas fa-envelope me-2"></i> info@tatamata.rs
+        </p>
+        <p class="footer-kontakt-info">
+          <i class="fas fa-map-marker-alt me-2"></i> Srbija
+        </p>
+      </div>
+
+    </div>
+
+    <hr class="footer-linija">
+
+    <div class="footer-dno">
+      <p>TataMata &copy; <?php echo date("Y"); ?></p>
+      <p>Napravio <a target="_blank" href="https://pixelate.rs/"><strong>Pixelate</strong></a></p>
     </div>
   </div>
 </footer>
