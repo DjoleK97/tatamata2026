@@ -28,7 +28,7 @@ $grades = Database::getInstance()->getAllGrades();
 <?php include_once 'includes/header.php'; ?>
 
 <section id="kursevi">
-  <div class="container-fluid">
+  <div class="container-fluid px-4">
 
     <?php printFormatedFlashMessage("buy_course_success_message"); ?>
     <?php printFormatedFlashMessage("register_success_message"); ?>
@@ -36,7 +36,7 @@ $grades = Database::getInstance()->getAllGrades();
     <?php printFormatedFlashMessage("login_success_message"); ?>
 
     <div class="row lewrapper">
-      <h1 class="kursevi-h1 text-white ps-0 pb-2 col-auto">
+      <h1 class="kursevi-h1 ps-0 pb-2 col-auto">
         <svg class="kursevi-icon" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 478.6 372.14">
           <defs>
             <style>
@@ -86,7 +86,7 @@ $grades = Database::getInstance()->getAllGrades();
       <?php if ($grade['grade_school_type_id' == 1] && $grade['grade_id'] <= 4) { ?>
         <?php continue; ?>
       <?php } ?>
-      <div class="row text-white mt-4 <?php if ($grade['grade_school_type_id'] == 1) echo "osnovnaskoladiv";
+      <div class="row mt-4 <?php if ($grade['grade_school_type_id'] == 1) echo "osnovnaskoladiv";
                                       else if ($grade['grade_school_type_id'] == 2) echo 'srednjaskoladiv';
                                       else echo 'fakultetskoladiv';                                       ?>">
         <div class="col-12 g-0 d-flex mb-4">

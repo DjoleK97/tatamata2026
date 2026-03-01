@@ -327,7 +327,7 @@ if (isset($_POST['login'])) {
             </div>
 
             <div class="not-registered-container d-flex justify-content-between align-items-center">
-              <p class="mb-0 d-inline-block text-white niste-reg">Nemate nalog?</p>
+              <p class="mb-0 d-inline-block niste-reg">Nemate nalog?</p>
               <a href="<?php echo BASE_URL . 'registracija'; ?>"><button type="button" role="button" class="btn btn-primary scale-btn-2">Novi korisnik</button></a>
             </div>
 
@@ -343,7 +343,7 @@ if (isset($_POST['login'])) {
         </div>
         <!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
 
-        <div class="mt-4 text-white text-center go-back">
+        <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL . $redirectTo; ?>">
             <i class="fas fa-arrow-left"></i> Odustani
           </a>

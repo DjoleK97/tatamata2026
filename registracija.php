@@ -285,7 +285,7 @@ if (isset($_POST['password'])) {
             </div>
 
             <div class="not-registered-container d-flex justify-content-between align-items-center">
-              <p class="mb-0 d-inline-block text-white niste-reg">Već imaš nalog?</p>
+              <p class="mb-0 d-inline-block niste-reg">Već imaš nalog?</p>
               <a href="<?php echo BASE_URL . 'prijava'; ?>"><button type="button" class="btn btn-primary scale-btn-2">Prijavi se</button></a>
             </div>
 
@@ -298,7 +298,7 @@ if (isset($_POST['password'])) {
 			</div>
 		<!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
 
-        <div class="mt-4 text-white text-center go-back">
+        <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL . $redirectTo; ?>">
             <i class="fas fa-arrow-left"></i> Odustani
           </a>

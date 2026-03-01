@@ -16,7 +16,7 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
 header("Permissions-Policy: camera=(), microphone=(), geolocation=()");
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
 // Content Security Policy - dozvoljava CDN resurse koje projekat koristi
-header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://kit.fontawesome.com https://cdn.plyr.io https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plyr.io; img-src 'self' data: https:; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com; connect-src 'self' https://ka-f.fontawesome.com https://www.google-analytics.com; media-src 'self'; frame-ancestors 'self';");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://kit.fontawesome.com https://cdn.plyr.io https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plyr.io https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com https://fonts.gstatic.com; connect-src 'self' https://ka-f.fontawesome.com https://www.google-analytics.com; media-src 'self'; frame-ancestors 'self';");
 
 $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/')); //  /prijava /registracija /index.php
 // echo $currentPage;
@@ -43,10 +43,14 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
   <?php } ?>
 
   <title>TataMata</title>
+  <!-- GOOGLE FONTS: POPPINS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <!-- CUSTOM CSS -->
-  <link rel="stylesheet" href="<?php echo BASE_URL . "public/css/styles.css" ?>"> <!-- Ovde treba putanja kao da smo u index.php fajlu a ne u header.php -->
+  <link rel="stylesheet" href="<?php echo BASE_URL . "public/css/styles.css" ?>">
   <!-- FONT AWESOME -->
   <script src="https://kit.fontawesome.com/5c5689b7a2.js"></script>
   <!-- PLAYER -->
