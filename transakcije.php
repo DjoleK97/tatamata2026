@@ -32,7 +32,7 @@ $total2 = 0;
   <div class="row">
 
     <div class="col-md-8 offset-md-2 mb-3">
-      <h1 class="text-white text-center fw-bold">&euro; Transakcije</h1>
+      <h1 class="text-center fw-bold"><i class="fas fa-receipt me-2" style="color:var(--plava);"></i> Transakcije</h1>
       <hr class="hr">
     </div>
 
@@ -41,7 +41,7 @@ $total2 = 0;
       <?php printFormatedFlashMessage("change_password_failed_message"); ?>
       <?php printFormatedFlashMessage("change_password_success_message"); ?>
 
-      <table class="table text-white table-hover">
+      <table class="table table-hover">
         <thead>
           <tr class="text-center">
             <th scope="col">#</th>

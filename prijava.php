@@ -301,23 +301,31 @@ if (isset($_POST['login'])) {
         <?php echo $errors['wrong_combination'] ?? ""; ?>
 
         <div class="login-form-container">
-          <h1>Postojeći korisnik</h1>
+          <h1><i class="fas fa-sign-in-alt me-2" style="color:var(--plava);"></i> Prijava</h1>
           <form id="login-form" method="POST">
             <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input id="email" name="email" type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid';
-                                                                              else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+              <label class="form-label"><i class="far fa-envelope"></i> Email</label>
+              <div class="input-ikona">
+                <i class="far fa-envelope"></i>
+                <input id="email" name="email" type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid';
+                                                                                else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+              </div>
               <?php echo $errors['email'] ?? ""; ?>
             </div>
             <div class="mb-3">
-              <label class="form-label">Šifra</label>
-              <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
+              <label class="form-label"><i class="fas fa-lock"></i> Šifra</label>
+              <div class="input-ikona">
+                <i class="fas fa-lock"></i>
+                <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
+              </div>
               <?php echo $errors['password'] ?? ""; ?>
-              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru mt-2 d-inline-block text-white text-decoration-none">Zaboravili ste šifru?</a>
+              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru mt-2 d-inline-block text-decoration-none">Zaboravili ste šifru?</a>
             </div>
 
-            <div class="forgot-password-container d-flex justify-content-center">
-              <button name="login" id="login-btn" type="submit" class="btn btn-primary scale-btn-2">Prijavi se</button>
+            <div class="d-grid mt-4">
+              <button name="login" id="login-btn" type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt me-2"></i> Prijavi se
+              </button>
             </div>
 
             <div class="line-container d-flex justify-content-between">
@@ -328,7 +336,11 @@ if (isset($_POST['login'])) {
 
             <div class="not-registered-container d-flex justify-content-between align-items-center">
               <p class="mb-0 d-inline-block niste-reg">Nemate nalog?</p>
-              <a href="<?php echo BASE_URL . 'registracija'; ?>"><button type="button" role="button" class="btn btn-primary scale-btn-2">Novi korisnik</button></a>
+              <a href="<?php echo BASE_URL . 'registracija'; ?>">
+                <button type="button" role="button" class="btn btn-outline-secondary">
+                  <i class="fas fa-user-plus me-1"></i> Novi korisnik
+                </button>
+              </a>
             </div>
 
             <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
@@ -337,11 +349,10 @@ if (isset($_POST['login'])) {
           </form>
         </div>
 
-        <!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
-        <div class="mt-3">
-          <p class="row justify-content-center" style="color:red; text-align:center;">Napomena:<br><em> Jedan nalog sme da koristi samo jedna osoba sa najviše 2 različita uređaja</em></p>
+        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva);">
+          <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
+          <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
         </div>
-        <!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
 
         <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL . $redirectTo; ?>">

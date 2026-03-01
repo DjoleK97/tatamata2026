@@ -109,8 +109,8 @@ $validator = $_GET['validator'];
 
             <div class="login-form-container">
 
-              <h1 class="mb-0">Nova šifra</h1>
-              <p class="kreiraj-p">Kreigrajte novu šifru za prijavu na Vaš nalog.</p>
+              <h1 class="mb-2"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Nova šifra</h1>
+              <p style="color:var(--siva);">Kreirajte novu šifru za prijavu na vaš nalog.</p>
 
               <form method="POST" class="mb-3">
               <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
@@ -131,12 +131,14 @@ $validator = $_GET['validator'];
                 <input type="hidden" name="selector" value="<?php echo $selector; ?>">
                 <input type="hidden" name="validator" value="<?php echo $validator; ?>">
 
-                <button name="reset-password" type="submit" class="confirm-btn btn btn-primary d-block w-100 mt-4 scale-btn-2">Potvrdi</button>
+                <button name="reset-password" type="submit" class="confirm-btn btn btn-primary d-block w-100 mt-4">
+                  <i class="fas fa-check me-2"></i> Potvrdi novu šifru
+                </button>
 
               </form>
             </div>
 
-            <div class="mt-4 text-white text-center go-back">
+            <div class="mt-4 text-center go-back">
               <a href="<?php echo BASE_URL; ?>pocetna">
                 <i class="fas fa-arrow-left"></i> Odustani
               </a>

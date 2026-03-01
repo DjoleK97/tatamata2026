@@ -61,8 +61,8 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
 
       <?php if (Database::getInstance()->isUserBlocked($_SESSION['user']->id)) { ?>
 
-        <div id="moji-kursevi-blocked" class="col text-white">
-          <h2 class="text-uppercase text-danger fw-bold">Tvoj nalog je blokiran</h2>
+        <div id="moji-kursevi-blocked" class="col">
+          <h2 class="text-uppercase text-danger fw-bold"><i class="fas fa-ban me-2"></i> Tvoj nalog je blokiran</h2>
           &bull; Primetili smo da je na ovom nalogu prekršen dozvoljen broj uređaja sa kojim se može pristupiti profilu.<br>
           &bull; Svakom korisniku je dozvoljen pristup sa <strong>najviše 2 uređaja</strong><br>
           &bull; <strong>Uprkos prethodnom upozorenju koje ste dobili, nastavili ste da delite Vaš nalog sa drugim osobama, što je <span style='color: red;'>strogo zabranjeno</span> i krši uslove korišćenja sajta tatamata.rs</strong><br>
@@ -74,14 +74,21 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
 
         <?php if (isset($courses) && count($courses) == 0) { ?>
           <div class="col-lg-6 offset-lg-3 text-center">
-            <h3 class="text-white">Nemate ni jedan kurs :(</h3>
-            <a class="text-decoration-none" href="<?php echo BASE_URL; ?>kursevi"><button class="mt-4 register-btn btn btn-primary scale-btn">Pogledajte dostupne kurseve</button></a>
+            <div class="py-5">
+            <i class="fas fa-book-open" style="font-size:3.5rem; color:var(--plava); opacity:.35;"></i>
+            <h3 class="mt-4" style="color:var(--siva);">Još uvek nemate ni jedan kurs.</h3>
+            <a class="text-decoration-none" href="<?php echo BASE_URL; ?>kursevi">
+              <button class="mt-4 register-btn btn btn-primary">
+                <i class="fas fa-graduation-cap me-2"></i> Pogledaj dostupne kurseve
+              </button>
+            </a>
+          </div>
           </div>
         <?php } else { ?>
-          <h1 class="text-white mb-5">Moji Kursevi</h1>
+          <h1 class="mb-5"><i class="fas fa-play-circle me-2" style="color:var(--plava);"></i> Moji Kursevi</h1>
 
           <?php foreach ($courses as $course) : ?>
-            <div class="course-col-container col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6 text-white">
+            <div class="course-col-container col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6">
               <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>">
                 <div class="course-img">
                   <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="Image error">
@@ -181,8 +188,8 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
     horns.addEventListener('click', () => {
       if (horns.checked) {
         razumemBtn.disabled = false;
-        razumemBtn.style.backgroundColor = "#DFE21E";
-        razumemBtn.style.color = "#000E60";
+        razumemBtn.style.backgroundColor = "#3245f9";
+        razumemBtn.style.color = "#ffffff";
         razumemBtn.style.fontWeight = "bold";
       } else {
         razumemBtn.disabled = true;

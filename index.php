@@ -2,51 +2,58 @@
 require_once "includes/functions.php";
 require_once "classes/Database.php";
 
-$number1 = rand(1, 10);
-$number2 = rand(1, 10);
-$result  = $number1 + $number2;
+$broj1  = rand(1, 10);
+$broj2  = rand(1, 10);
+$zbir   = $broj1 + $broj2;
 
-// Kursevi za homepage grid
-$allCourses = Database::getInstance()->getAllCourses();
-$allGrades  = Database::getInstance()->getAllGrades();
+$sviKursevi = Database::getInstance()->getAllCourses();
+$sviRazredi = Database::getInstance()->getAllGrades();
+
+// Mapa razred_id => naziv razreda
+$mapaRazreda = [];
+foreach ($sviRazredi as $r) {
+  $mapaRazreda[$r['grade_id']] = $r['grade_name'];
+}
 
 include_once 'includes/header.php';
 ?>
 
 <!-- ══════════════════════════════════════════
-     HERO SECTION
+     HERO SEKCIJA
 ══════════════════════════════════════════ -->
 <section class="hero-section">
-  <div class="container position-relative" style="z-index:1;">
+  <div class="container position-relative" style="z-index:1; max-width:860px;">
 
     <?php printFormatedFlashMessage("register_success_message"); ?>
     <?php printFormatedFlashMessage("unauthorized_access"); ?>
     <?php printFormatedFlashMessage("contact_form_success"); ?>
     <?php printFormatedFlashMessage("login_success_message"); ?>
 
-    <div class="hero-eyebrow">📚 Online kursevi matematike</div>
+    <div class="hero-eyebrow">
+      <i class="fas fa-graduation-cap"></i> Online kursevi matematike
+    </div>
 
     <h1 class="hero-title">
-      Nauči matematiku<br>
-      <span class="highlight">na lakši način</span>
+      Nauci matematiku<br>
+      <span class="highlight">na laksi nacin</span>
     </h1>
 
     <p class="hero-subtitle">
-      Sveobuhvatni video kursevi, dostupni kad god poželiš —
-      detaljno objašnjeni i lako razumljivi. Samo za tebe.
+      Sveobuhvatni video kursevi, dostupni kad god pozelis —
+      detaljno objasnjeni i lako razumljivi. Samo za tebe.
     </p>
 
-    <!-- Search bar -->
-    <form class="hero-search-form" action="<?php echo BASE_URL; ?>kursevi" method="GET" onsubmit="return heroSearch(this)">
+    <!-- Traka za pretragu -->
+    <form class="hero-search-form" onsubmit="return heroPretraga(this)">
       <input
         class="hero-search-input"
         type="text"
-        name="q"
-        placeholder="Pretraži kurseve (npr. razlomci, jednačine…)"
+        id="hero-search-input"
+        placeholder="Pretrazi kurseve (npr. razlomci, jednacine…)"
         autocomplete="off"
       >
       <button class="hero-search-btn" type="submit">
-        <i class="fas fa-search"></i>&nbsp; Pretraži
+        <i class="fas fa-search"></i>&nbsp; Pretrazi
       </button>
     </form>
 
@@ -54,19 +61,19 @@ include_once 'includes/header.php';
       Pogledaj sve kurseve <i class="fas fa-arrow-right"></i>
     </a>
 
-    <!-- Stats -->
+    <!-- Statistike -->
     <div class="hero-stats">
       <div>
-        <span class="hero-stat-number"><?php echo getAge('2015-09-15'); ?>+</span>
-        <div class="hero-stat-label">godina iskustva</div>
+        <span class="hero-stat-num"><?php echo getAge('2015-09-15'); ?>+</span>
+        <div class="hero-stat-lbl">godina iskustva</div>
       </div>
       <div>
-        <span class="hero-stat-number">90+</span>
-        <div class="hero-stat-label">zadovoljnih učenika</div>
+        <span class="hero-stat-num">90+</span>
+        <div class="hero-stat-lbl">zadovoljnih ucenika</div>
       </div>
       <div>
-        <span class="hero-stat-number">87%</span>
-        <div class="hero-stat-label">osmaka upisalo željenu školu</div>
+        <span class="hero-stat-num">87%</span>
+        <div class="hero-stat-lbl">osmaka upisalo zeljenu skolu</div>
       </div>
     </div>
 
@@ -75,66 +82,54 @@ include_once 'includes/header.php';
 
 
 <!-- ══════════════════════════════════════════
-     FEATURED COURSES GRID
+     KURSEVI GRID
 ══════════════════════════════════════════ -->
 <section class="home-courses-section" id="pocetna-kursevi">
   <div class="container">
+
     <div class="text-center mb-2">
-      <span class="section-badge">Kursevi</span>
+      <span class="section-badge"><i class="fas fa-play-circle me-1"></i> Kursevi</span>
     </div>
     <h2 class="section-title text-center">Izaberi kurs koji ti treba</h2>
-    <p class="section-subtitle text-center">Kursevi za osnovnu školu, srednju školu i fakultet</p>
-
-    <?php
-    // Group courses by grade for display
-    $coursesByGrade = [];
-    foreach ($allCourses as $course) {
-      $coursesByGrade[$course['grade_id']][] = $course;
-    }
-
-    // Map grade_id => grade info
-    $gradeMap = [];
-    foreach ($allGrades as $g) {
-      $gradeMap[$g['grade_id']] = $g;
-    }
-
-    $shown = 0;
-    $maxShow = 6; // show max 6 courses on homepage
-    ?>
+    <p class="section-subtitle text-center">
+      Kursevi za osnovnu skolu, srednju skolu i fakultet — sve na jednom mestu.
+    </p>
 
     <div class="row g-4">
-      <?php foreach ($allCourses as $course) : ?>
-        <?php if ($shown >= $maxShow) break; ?>
-        <?php
-          $gradeName = $gradeMap[$course['grade_id']]['grade_name'] ?? '';
-          $shown++;
-        ?>
+      <?php
+      $prikazano = 0;
+      foreach ($sviKursevi as $kurs) :
+        if ($prikazano >= 6) break;
+        $prikazano++;
+        $nazivRazreda = $mapaRazreda[$kurs['grade_id']] ?? '';
+      ?>
         <div class="col-lg-4 col-md-6">
-          <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>" class="home-course-card">
-            <div class="card-img-wrap">
-              <?php if ($course['live']) : ?>
+          <a href="<?php echo BASE_URL; ?>kurs/<?php echo $kurs['id']; ?>" class="home-course-card">
+            <div class="karta-slika">
+              <?php if ($kurs['live']) : ?>
                 <img
-                  src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>"
-                  alt="<?php echo htmlspecialchars($course['name']); ?>"
+                  src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $kurs['img']; ?>"
+                  alt="<?php echo htmlspecialchars($kurs['name']); ?>"
                   loading="lazy"
                 >
               <?php else : ?>
-                <img
-                  src="<?php echo BASE_URL; ?>public/images/upripremi.png"
-                  alt="U pripremi"
-                  loading="lazy"
-                >
+                <div class="karta-placeholder">
+                  <i class="fas fa-clock"></i>
+                  <span>U pripremi</span>
+                </div>
               <?php endif; ?>
             </div>
-            <div class="card-body-custom">
-              <div class="card-grade-tag"><?php echo htmlspecialchars($gradeName); ?></div>
-              <div class="card-title-text"><?php echo htmlspecialchars($course['name']); ?></div>
-              <div class="card-bottom">
-                <span class="btn-card-primary">Pogledaj kurs</span>
-                <?php if ($course['live']) : ?>
-                  <span class="card-live-badge">✓ Dostupan</span>
+            <div class="karta-telo">
+              <div class="karta-razred">
+                <i class="fas fa-layer-group me-1"></i><?php echo htmlspecialchars($nazivRazreda); ?>
+              </div>
+              <div class="karta-naziv"><?php echo htmlspecialchars($kurs['name']); ?></div>
+              <div class="karta-dno">
+                <span class="btn-karta">Pogledaj kurs <i class="fas fa-arrow-right ms-1"></i></span>
+                <?php if ($kurs['live']) : ?>
+                  <span class="bedz-dostupno"><i class="fas fa-check-circle me-1"></i>Dostupan</span>
                 <?php else : ?>
-                  <span class="card-soon-badge">Uskoro</span>
+                  <span class="bedz-uskoro"><i class="fas fa-hourglass-half me-1"></i>Uskoro</span>
                 <?php endif; ?>
               </div>
             </div>
@@ -144,7 +139,7 @@ include_once 'includes/header.php';
     </div>
 
     <div class="text-center mt-5">
-      <a href="<?php echo BASE_URL; ?>kursevi" class="view-all-link">
+      <a href="<?php echo BASE_URL; ?>kursevi" class="vidi-sve-link">
         Svi kursevi <i class="fas fa-arrow-right"></i>
       </a>
     </div>
@@ -156,73 +151,95 @@ include_once 'includes/header.php';
 <!-- ══════════════════════════════════════════
      O BRENDU
 ══════════════════════════════════════════ -->
-<div id="o-brendu">
+<section id="o-brendu">
   <div class="container">
+
     <div class="text-center mb-2">
-      <span class="section-badge">O meni</span>
+      <span class="section-badge"><i class="fas fa-user-tie me-1"></i> O meni</span>
     </div>
-    <h1>Matematika više neće da ti bude problem :)</h1>
-    <p class="razumevanje"><em>"Razumevanje matematike je prvi korak do znanja i odlične ocene"</em></p>
+    <h2 class="section-title text-center">Matematika vise nece da ti bude problem</h2>
+    <p class="razumevanje text-center mb-5">
+      <em>"Razumevanje matematike je prvi korak do znanja i odlicne ocene"</em>
+    </p>
 
-    <div id="five-divs">
-      <div class="container-fluid">
-        <div class="row text-center">
-          <img src="public/images/za_kurseve2.png" alt="">
+    <div class="row g-5 align-items-start">
+
+      <!-- Tekst levo -->
+      <div class="col-lg-7 o-brendu-tekst">
+        <h2><span class="color-yellow fw-bold">ZASTO</span> "TataMata"?</h2>
+        <hr>
+        <p>
+          <strong>Volim</strong> da pomognem drugoj osobi ukoliko mogu i znam kako.<br>
+          <strong>Verujem</strong> da matematiku moze <strong>svako da nauci</strong>,
+          ako se stvari objasne na pravi nacin.<br>
+          <strong>Moj san</strong> je da omogucim ucenicima sa nasih prostora
+          da imaju kvalitetnu i jasnu nastavu koja ce im doneti dugotrajno znanje i odlicne rezultate.
+        </p>
+
+        <h2 class="mt-4"><span class="color-yellow fw-bold">KAKO</span> cu pokusati ovo da ostvarim?</h2>
+        <hr>
+        <p>
+          Pravljenjem video kurseva koji su sveobuhvatni, laki za razumevanje i koji testiraju sta ste naucili.<br>
+          Cilj mi je da svaku lekciju naucite sa <strong>razumevanjem</strong>.<br>
+          Zbog toga mi je <strong>kvalitet</strong> nastave na prvom mestu.<br>
+          Kvalitetna nastava vama daje cvrsto znanje i odlicne ocene — tako da svi pobedujemo.
+        </p>
+      </div>
+
+      <!-- Profilna kartica desno -->
+      <div class="col-lg-5">
+        <div class="profil-kartica">
+          <div class="profil-avatar">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3>Djole — TataMata</h3>
+          <p>Profesor matematike sa vise od <?php echo getAge('2015-09-15'); ?> godina iskustva u radu sa ucenicima</p>
+          <div class="d-flex justify-content-center gap-3 mt-4" style="flex-wrap:wrap;">
+            <a href="https://www.youtube.com/c/TataMATA/" target="_blank" rel="noopener" class="btn btn-primary px-4">
+              <i class="fab fa-youtube me-2"></i>YouTube
+            </a>
+            <a href="https://www.instagram.com/tatamata.casovi/" target="_blank" rel="noopener" class="btn btn-outline-secondary px-4">
+              <i class="fab fa-instagram me-2"></i>Instagram
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Statistike kartice -->
+    <div class="row g-4 mt-4">
+      <div class="col-md-4">
+        <div class="stat-kartica">
+          <i class="fas fa-briefcase"></i>
+          <div class="stat-broj">
+            <span class="scroll-counter" data-counter-time="2000"><?php echo getAge('2015-09-15'); ?></span>+
+          </div>
+          <div class="stat-opis">godina radnog iskustva</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-kartica">
+          <i class="fas fa-heart"></i>
+          <div class="stat-broj">
+            <span class="scroll-counter" data-counter-time="2000">90</span>+
+          </div>
+          <div class="stat-opis">zadovoljnih ucenika</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-kartica">
+          <i class="fas fa-trophy"></i>
+          <div class="stat-broj">
+            <span class="scroll-counter" data-counter-time="2000">87</span>%
+          </div>
+          <div class="stat-opis">osmaka upisalo zeljenu skolu</div>
         </div>
       </div>
     </div>
 
-    <div class="zastosamosnovao mt-5">
-      <div class="row align-items-center g-5">
-        <div class="col-md-12 col-lg-6">
-          <h2><span class="color-yellow fw-bold">ZAŠTO</span> "TataMata"?</h2>
-          <hr>
-          <p class="volim-verujem">
-            <strong>Volim</strong> da pomognem drugoj osobi ukoliko mogu i znam kako.<br>
-            <strong>Verujem</strong> da matematiku može <strong>svako da nauči</strong>,
-            ako se stvari objasne na pravi način.<br>
-            <strong>Moj san</strong> je da omogućim učenicima sa naših prostora
-            da imaju kvalitetnu i jasnu nastavu
-            koja će im doneti dugoročno znanje i odlične rezultate.
-          </p>
-
-          <h2 class="mt-5"><span class="color-yellow fw-bold">KAKO</span> ću pokušati ovo da ostvarim?</h2>
-          <hr>
-          <p class="volim-verujem">
-            Pravljenjem video kurseva koji su sveobuhvatni, laki za razumevanje i koji testiraju šta ste naučili.<br>
-            Cilj mi je da svaku lekciju naučite sa <strong>razumevanjem.</strong><br>
-            Zbog toga mi je <strong>kvalitet</strong> nastave na prvom mestu.<br>
-            Kvalitetna nastava vama daje čvrsto znanje i odlične ocene,<br>
-            a meni dobar ugled i više učenika.<br>
-            Tako da svi pobeđujemo.
-          </p>
-        </div>
-        <div class="col-md-12 col-lg-6 text-center">
-          <img class="lepi-djolo" src="public/images/lepidjolo.png" alt="Đole - TataMata">
-          <p class="mt-3" style="color:var(--gray);">Đole - TataMata</p>
-        </div>
-      </div>
-
-      <div class="row counter-div text-center mt-5">
-        <div class="col">
-          <img class="imgCenter" src="public/images/iskustvo.png" alt="">
-          <span class="scroll-counter" data-counter-time="2000"><?php echo getAge('2015-09-15'); ?></span>
-          <div>godina<br>radnog iskustva</div>
-        </div>
-        <div class="col">
-          <img class="imgCenter" src="public/images/srce2.png" alt="">
-          <span class="scroll-counter" data-counter-time="2000">90</span>
-          <div>zadovoljnih učenika</div>
-        </div>
-        <div class="col">
-          <img class="imgCenter" src="public/images/smajli.png" alt="">
-          <span class="scroll-counter" data-counter-time="2000">87</span>%
-          <div>osmaka je upisalo<br>željenu školu</div>
-        </div>
-      </div>
-    </div>
   </div>
-</div>
+</section>
 
 
 <!-- ══════════════════════════════════════════
@@ -232,277 +249,303 @@ include_once 'includes/header.php';
 
 <div id="usluge-second">
   <div class="container">
+
     <div class="text-center mb-2">
-      <span class="section-badge" style="background:#fff3;color:var(--dark);">Šta nudimo</span>
+      <span class="section-badge" style="background:rgba(255,224,102,.15);color:var(--zuta);">
+        <i class="fas fa-star me-1"></i> Sta nudimo
+      </span>
     </div>
     <h1>USLUGE</h1>
-    <div class="row text-center justify-content-center">
-      <div class="col-md-4 usluge-col">
-        <a class="text-decoration-none" href="<?php echo BASE_URL; ?>kursevi">
-          <img class="icon" src="public/images/usluge/kursevi.svg" alt="Kursevi">
-          <p class="mt-3 usluga-title">Kursevi</p>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>kursevi" class="usluga-karta">
+          <i class="fas fa-play-circle"></i>
+          <p class="usluga-naziv">Kursevi</p>
+          <p class="usluga-opis">Video kursevi iz matematike za sve uzraste</p>
         </a>
       </div>
-      <div class="col-md-4 usluge-col mt-3 mt-md-0">
-        <a href="<?php echo BASE_URL; ?>priprema-za-prijemni" class="text-decoration-none">
-          <img class="icon" style="height:150px;" src="public/images/usluge/malamatura.svg" alt="Priprema za prijemni">
-          <p class="usluga-title">Priprema za prijemni</p>
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>priprema-za-prijemni" class="usluga-karta">
+          <i class="fas fa-medal"></i>
+          <p class="usluga-naziv">Priprema za prijemni</p>
+          <p class="usluga-opis">Intenzivna priprema za malu maturu i prijemni ispit</p>
         </a>
       </div>
-      <div class="col-md-4 usluge-col mt-3 mt-md-0">
-        <a href="<?php echo BASE_URL; ?>konsultacije" class="text-decoration-none">
-          <img class="icon" style="height:140px;" src="<?php echo BASE_URL; ?>public/images/usluge/konsultacije.svg" alt="Konsultacije">
-          <p class="mt-2 usluga-title">Konsultacije</p>
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>konsultacije" class="usluga-karta">
+          <i class="fas fa-comments"></i>
+          <p class="usluga-naziv">Konsultacije</p>
+          <p class="usluga-opis">Individualne konsultacije iz matematike</p>
         </a>
       </div>
-      <div class="col-md-4 usluge-col mt-3">
-        <a href="<?php echo BASE_URL; ?>priprema-za-pismene-i-kontrolne" class="text-decoration-none">
-          <img class="icon" src="public/images/usluge/pripremazapismeni.svg" alt="Priprema">
-          <p class="mt-3 usluga-title">Priprema za pismene i kontrolne</p>
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>priprema-za-pismene-i-kontrolne" class="usluga-karta">
+          <i class="fas fa-pencil-alt"></i>
+          <p class="usluga-naziv">Priprema za pismene</p>
+          <p class="usluga-opis">Ciljana priprema za pismene i kontrolne zadatke</p>
         </a>
       </div>
-      <div class="col-md-4 usluge-col mt-3">
-        <a href="<?php echo BASE_URL; ?>individualni-casovi" class="text-decoration-none">
-          <img class="icon" style="height:140px;" src="public/images/usluge/individualnicasovi.svg" alt="Individualni">
-          <p class="mt-3 usluga-title">Individualni časovi</p>
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>individualni-casovi" class="usluga-karta">
+          <i class="fas fa-user-graduate"></i>
+          <p class="usluga-naziv">Individualni casovi</p>
+          <p class="usluga-opis">Casovi prilagodjeni tvom tempu i potrebama</p>
         </a>
       </div>
-      <div class="col-md-4 usluge-col mt-3">
-        <a href="<?php echo BASE_URL; ?>grupni-casovi" class="text-decoration-none">
-          <img class="icon" style="height:140px;" src="public/images/usluge/grupnicasovi.svg" alt="Grupni">
-          <p class="mt-3 usluga-title">Grupni časovi</p>
+
+      <div class="col-md-4 col-sm-6">
+        <a href="<?php echo BASE_URL; ?>grupni-casovi" class="usluga-karta">
+          <i class="fas fa-users"></i>
+          <p class="usluga-naziv">Grupni casovi</p>
+          <p class="usluga-opis">Ucite zajedno uz vodstvo iskusnog profesora</p>
         </a>
       </div>
+
     </div>
   </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════
-     TESTIMONIALS
+     PREPORUKE
 ══════════════════════════════════════════ -->
 <section id="testimonials">
-  <div class="demoT">
-    <div class="container">
-      <div class="text-center mb-2">
-        <span class="section-badge" style="background:rgba(255,224,102,.18);color:var(--yellow);">Recenzije</span>
-      </div>
-      <h1>REKLI SU O MENI</h1>
-      <div class="row">
-        <div class="col-md-12">
-          <div id="testimonial-slider" class="owl-carousel">
+  <div class="container">
 
-            <div class="testimonial">
-              <div class="testimonial-icon"><i class="fa fa-quote-left"></i></div>
-              <p class="description">
-                Zahvaljujući pripremama za prijemni prošle godine moje dete je upisalo
-                željenu školu (gimnaziju). Svima toplo preporučujem a mi nastavljamo saradnju i u srednjoj školi.
-              </p>
-              <h3 class="title">Jelena, Miloševa mama</h3>
+    <div class="text-center mb-2">
+      <span class="section-badge"><i class="fas fa-star me-1"></i> Recenzije</span>
+    </div>
+    <h1>STA KAZUJU UCENICI</h1>
+
+    <div class="row">
+      <div class="col-12">
+        <div id="testimonial-slider" class="owl-carousel">
+
+          <div class="preporuka-karta">
+            <div class="preporuka-ikona"><i class="fas fa-quote-left"></i></div>
+            <p class="preporuka-tekst">
+              Zahvaljujuci pripremama za prijemni prosle godine moje dete je upisalo zeljenu skolu (gimnaziju).
+              Svima toplo preporucujem, a mi nastavljamo saradnju i u srednjoj skoli.
+            </p>
+            <div class="preporuka-autor">
+              <i class="fas fa-user-circle me-2" style="color:var(--plava)"></i>Jelena, Miloseva mama
             </div>
-
-            <div class="testimonial">
-              <div class="testimonial-icon"><i class="fa fa-quote-left"></i></div>
-              <p class="description">
-                Sve preporuke za rad i saradnju sa ovim mladim čovekom. Ima veoma pristupačan
-                rad sa decom i iz njih izvuče najbolje…zahvaljući njihovom timskom radu
-                postigli smo super rezultate na prijemnom ispitu.
-              </p>
-              <h3 class="title">Rada, Nikolinina mama</h3>
-            </div>
-
-            <div class="testimonial">
-              <div class="testimonial-icon"><i class="fa fa-quote-left"></i></div>
-              <p class="description">
-                Veoma pametna i sposobna osoba spremna da podeli i uspešno prenese svoje
-                znanje na druge. Strpljiv i susretljiv, bez predrasuda.
-                Od kad radi sa mojom ćerkom matematika za nju više nije toliko strašna.
-              </p>
-              <h3 class="title">Jelena, Tarina mama</h3>
-            </div>
-
-            <div class="testimonial">
-              <div class="testimonial-icon"><i class="fa fa-quote-left"></i></div>
-              <p class="description">
-                Napokon da pronadjem nekoga ko ne komplikuje stvari. Sve si objasnio lepo, kratko i jednostavno. Puno ti hvala!
-              </p>
-              <h3 class="title">Andrej, učenik — YouTube komentar</h3>
-            </div>
-
-            <div class="testimonial">
-              <div class="testimonial-icon"><i class="fa fa-quote-left"></i></div>
-              <p class="description">
-                Brate mili, sutra imam test, više sam shvatio iz tvog klipa nego od privatnih časova,
-                jer ti nekako pričas našim jezikom. Svaka čast, mnogo sam sada siguran u sebe za bolju ocenu.
-              </p>
-              <h3 class="title">Ilija, učenik — YouTube komentar</h3>
-            </div>
-
           </div>
+
+          <div class="preporuka-karta">
+            <div class="preporuka-ikona"><i class="fas fa-quote-left"></i></div>
+            <p class="preporuka-tekst">
+              Sve preporuke za rad i saradnju sa ovim mladim covekom. Ima veoma pristupacen
+              rad sa decom i iz njih izvuce najbolje. Zahvaljujuci timskom radu postigli smo
+              super rezultate na prijemnom ispitu.
+            </p>
+            <div class="preporuka-autor">
+              <i class="fas fa-user-circle me-2" style="color:var(--plava)"></i>Rada, Nikolinina mama
+            </div>
+          </div>
+
+          <div class="preporuka-karta">
+            <div class="preporuka-ikona"><i class="fas fa-quote-left"></i></div>
+            <p class="preporuka-tekst">
+              Veoma pametna i sposobna osoba, strpljiv i susretljiv. Od kad radi sa mojom cerkom,
+              matematika za nju vise nije toliko strasna i nerazumljiva. Svaka preporuka za dalju saradnju.
+            </p>
+            <div class="preporuka-autor">
+              <i class="fas fa-user-circle me-2" style="color:var(--plava)"></i>Jelena, Tarina mama
+            </div>
+          </div>
+
+          <div class="preporuka-karta">
+            <div class="preporuka-ikona"><i class="fas fa-quote-left"></i></div>
+            <p class="preporuka-tekst">
+              Napokon da nadjem nekoga ko ne komplikuje stvari. Sve si objasnio lepo, kratko i jednostavno.
+              Puno ti hvala!
+            </p>
+            <div class="preporuka-autor">
+              <i class="fas fa-user-circle me-2" style="color:var(--plava)"></i>Andrej, ucenik — YouTube komentar
+            </div>
+          </div>
+
+          <div class="preporuka-karta">
+            <div class="preporuka-ikona"><i class="fas fa-quote-left"></i></div>
+            <p class="preporuka-tekst">
+              Brate mili, sutra imam test, vise sam shvatio iz tvog klipa nego od privatnih casova,
+              jer ti nekako pricas nasim jezikom. Svaka cast, mnogo sam sada siguran u sebe za bolju ocenu.
+            </p>
+            <div class="preporuka-autor">
+              <i class="fas fa-user-circle me-2" style="color:var(--plava)"></i>Ilija, ucenik — YouTube komentar
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
 
 <!-- ══════════════════════════════════════════
-     FAQ
+     CESTA PITANJA (FAQ)
 ══════════════════════════════════════════ -->
 <section id="faq">
   <div class="container">
+
     <div class="text-center mb-2">
-      <span class="section-badge">Pitanja</span>
+      <span class="section-badge"><i class="fas fa-question-circle me-1"></i> Pomoc</span>
     </div>
-    <h1 class="text-center fw-bold mb-3">NAJČEŠĆE POSTAVLJENA PITANJA</h1>
+    <h1 class="text-center fw-bold mb-3">CESTO POSTAVLJANA PITANJA</h1>
+
     <div id="faq-categories" class="d-flex justify-content-center flex-wrap">
-      <p class="faq-category active fw-bold" data-categorie-name="kat1">SAJT</p>
-      <p class="faq-category" data-categorie-name="kat2">KURSEVI</p>
-      <p class="faq-category" data-categorie-name="kat3">NALOG</p>
+      <p class="faq-category active fw-bold" data-categorie-name="kat1">
+        <i class="fas fa-globe me-1"></i> Sajt
+      </p>
+      <p class="faq-category" data-categorie-name="kat2">
+        <i class="fas fa-book me-1"></i> Kursevi
+      </p>
+      <p class="faq-category" data-categorie-name="kat3">
+        <i class="fas fa-user me-1"></i> Nalog
+      </p>
     </div>
+
     <div class="row">
       <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
 
-        <!-- KAT 1 -->
+        <!-- Kategorija: SAJT -->
         <div class="accordion accordion-flush" id="accordion-faq-1" data-categorie-name="kat1">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-collapse-1">
-                #1. Kako da koristim sajt tatamata.rs?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-kol-1">
+                Kako da koristim sajt tatamata.rs?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-1-collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
-              <div class="accordion-body">- Na vrhu ove strane imaš video uputstvo gde je sve detaljno objašnjeno.</div>
+            <div id="faq-1-kol-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
+              <div class="accordion-body">Na pocetnoj strani imas video uputstvo u kome je sve detaljno objasnjeno.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-collapse-4">
-                #2. Sa koliko uređaja mogu da pristupim sajtu?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-kol-2">
+                Sa koliko uredjaja mogu da pristupim sajtu?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-1-collapse-4" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
-              <div class="accordion-body">- Možeš da pristupiš sajtu sa najviše 2 različita uređaja. (npr. laptop i telefon)</div>
+            <div id="faq-1-kol-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
+              <div class="accordion-body">Mozes da pristupisas sajtu sa najvise 2 razlicita uredjaja (npr. laptop i telefon).</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-collapse-6">
-                #3. Da li mogu da promenim uređaj ukoliko ga više ne koristim?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-kol-3">
+                Da li mogu da promenim uredjaj ukoliko ga vise ne koristim?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-1-collapse-6" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
-              <div class="accordion-body">- Možeš, ali obavezno se prvo javi putem forme!</div>
+            <div id="faq-1-kol-3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
+              <div class="accordion-body">Mozes, ali se obavezno prvo javi putem kontakt forme.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-collapse-2">
-                #4. Da li je moguće gledati klipove preko mobilnog uređaja?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1-kol-4">
+                Da li je moguce gledati klipove preko mobilnog uredjaja?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-1-collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
-              <div class="accordion-body">- Moguće je. Samo prilikom gledanja klipova omogući rotaciju na telefonu.</div>
+            <div id="faq-1-kol-4" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-1">
+              <div class="accordion-body">Da, moguce je. Samo tokom gledanja klipova ukljuci rotaciju ekrana na telefonu.</div>
             </div>
           </div>
         </div>
 
-        <!-- KAT 2 -->
+        <!-- Kategorija: KURSEVI -->
         <div class="accordion accordion-flush" id="accordion-faq-2" data-categorie-name="kat2" style="display:none;">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-collapse-1">
-                #1. Kako mogu da kupim željeni kurs?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-kol-1">
+                Kako mogu da kupim zeljeni kurs?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-2-collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
-              <div class="accordion-body">- Odeš na "KURSEVI", izabereš kurs i klikneš "KUPI KURS". Popuniš uplatnicu i izvršiš uplatu u pošti, banci ili online.</div>
+            <div id="faq-2-kol-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
+              <div class="accordion-body">Odjes na stranicu "Kursevi", izaberes kurs i kliknes "Kupi kurs". Nakon toga popunis uplatnicu i uplatu vrsis u posti, banci ili putem internet bankarstva.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-collapse-2">
-                #2. Kada ću dobiti pristup kursevima?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-kol-2">
+                Kada cu dobiti pristup kursevima?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-2-collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
-              <div class="accordion-body">- Čim uplata bude evidentirana, dobijaš pristup kursu.</div>
+            <div id="faq-2-kol-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
+              <div class="accordion-body">Cim uplata bude evidentirana, dobijes pristup kursu.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-collapse-3">
-                #3. Da li ću moći da razumem kurs ukoliko nemam predznanje?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-kol-3">
+                Da li cu moci da razumem kurs ukoliko nemam predznanje?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-2-collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
-              <div class="accordion-body">- Naravno! Kursevi su prilagođeni svim učenicima nezavisno od nivoa znanja.</div>
+            <div id="faq-2-kol-3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
+              <div class="accordion-body">Naravno! Kursevi su prilagodjeni svim ucenicima, nezavisno od trenutnog nivoa znanja.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-collapse-4">
-                #4. Koliko dugo imam pristup kursevima?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-kol-4">
+                Koliko dugo imam pristup kursevima?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-2-collapse-4" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
-              <div class="accordion-body">- Imaš pristup godinu dana od datuma kupovine.</div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2-collapse-5">
-                #5. Kako da se prijavim za pripremnu nastavu za malu maturu?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
-              </button>
-            </h2>
-            <div id="faq-2-collapse-5" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
-              <div class="accordion-body">- Popuniš formu ispod ili piši u DM na instagramu @tatamata.casovi</div>
+            <div id="faq-2-kol-4" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-2">
+              <div class="accordion-body">Imas pristup godinu dana od datuma kupovine.</div>
             </div>
           </div>
         </div>
 
-        <!-- KAT 3 -->
+        <!-- Kategorija: NALOG -->
         <div class="accordion accordion-flush" id="accordion-faq-3" data-categorie-name="kat3" style="display:none;">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-collapse-1">
-                #1. Kako da znam da li treba da se registrujem ili prijavim?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-kol-1">
+                Kako da znam da li treba da se registrujem ili prijavim?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-3-collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
-              <div class="accordion-body">- Ako si nov na sajtu i nemaš nalog — REGISTRUJ SE (samo jedanput). Svaki sledeći put — PRIJAVI SE.</div>
+            <div id="faq-3-kol-1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
+              <div class="accordion-body">Ako si nov na sajtu i nemas nalog — registruj se (samo jedanput). Svaki sledeci put — prijavi se.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-collapse-2">
-                #2. Zaboravio/la šifru i ne mogu da se ulogujem. Šta da radim?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-kol-2">
+                Zaboravio sam sifru i ne mogu da se ulogujem. Sta da radim?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-3-collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
-              <div class="accordion-body">- Na stranici "PRIJAVI SE" klikni "Zaboravili ste šifru". Unesi email i klikni "POTVRDI". Doći će ti mejl sa linkom za promenu šifre.</div>
+            <div id="faq-3-kol-2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
+              <div class="accordion-body">Na stranici "Prijavi se" klikni "Zaboravili ste sifru?". Unesi email i klikni "Potvrdi". Stici ce ti mejl sa linkom za promenu sifre.</div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-collapse-3">
-                #3. Da li mogu da delim nalog sa još nekom osobom?
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3-kol-3">
+                Da li mogu da delim nalog sa jos nekom osobom?
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle ms-auto flex-shrink-0" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
               </button>
             </h2>
-            <div id="faq-3-collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
-              <div class="accordion-body">- Ne. Svaki nalog je namenjen isključivo jednoj osobi. Deljenje naloga rezultuje onemogućavanjem pristupa.</div>
+            <div id="faq-3-kol-3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq-3">
+              <div class="accordion-body">Ne. Svaki nalog je namenjen iskljucivo jednoj osobi. Deljenje naloga rezultuje trajnim blokiranjem pristupa kursevima.</div>
             </div>
           </div>
         </div>
@@ -516,75 +559,79 @@ include_once 'includes/header.php';
 <!-- ══════════════════════════════════════════
      KONTAKT
 ══════════════════════════════════════════ -->
-<section id="kontakt" class="contact mb-0">
+<section id="kontakt">
   <div class="container">
     <div class="row justify-content-center">
-      <h1 class="mb-4 text-center fw-bold">KONTAKT</h1>
+
+      <div class="col-12 text-center mb-2">
+        <span class="section-badge"><i class="fas fa-envelope me-1"></i> Kontakt</span>
+      </div>
+      <h1 class="mb-4 text-center fw-bold">POSALJI PORUKU</h1>
 
       <div class="col-lg-7 col-md-9 col-sm-11 col-12">
         <div class="login-form-container">
-          <div class="row">
-            <div class="col">
-              <form enctype="multipart/form-data" action="contact-form-logic.php" id="contact-form" method="POST" onsubmit="return validateForm()">
+          <form enctype="multipart/form-data" action="contact-form-logic.php" id="contact-form" method="POST" onsubmit="return validateForm()">
 
-                <?php if (Database::getInstance()->isUserLoggedIn()) : ?>
-                  <div class="mb-4">
-                    <label class="form-label"><i class="far fa-user"></i> Ime i prezime</label>
-                    <input id="contact-name" readonly name="firstname" type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION['user']->firstname . ' ' . $_SESSION['user']->lastname); ?>">
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label"><i class="far fa-envelope"></i> Email</label>
-                    <input id="contact-email" readonly name="email" type="email" class="form-control" value="<?php echo htmlspecialchars($_SESSION['user']->email ?? ''); ?>">
-                  </div>
-                <?php else : ?>
-                  <div class="mb-4">
-                    <label class="form-label"><i class="far fa-user"></i> Ime i prezime</label>
-                    <input id="contact-name" name="firstname" type="text" class="form-control" placeholder="Tvoje ime i prezime" value="<?php echo $firstname ?? ''; ?>">
-                    <p id="name-error" class="invalid-feedback mb-0" style="display:none;">Molimo unesite ime.</p>
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label"><i class="far fa-envelope"></i> Email</label>
-                    <input id="contact-email" name="email" type="email" class="form-control" placeholder="Tvoj email" value="<?php echo $email ?? ''; ?>">
-                    <p id="email-error" class="invalid-feedback mb-0" style="display:none;">Email format nije validan.</p>
-                  </div>
-                <?php endif; ?>
+            <?php if (Database::getInstance()->isUserLoggedIn()) : ?>
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-user"></i> Ime i prezime</label>
+                <input id="contact-name" readonly name="firstname" type="text" class="form-control"
+                  value="<?php echo htmlspecialchars($_SESSION['user']->firstname . ' ' . $_SESSION['user']->lastname); ?>">
+              </div>
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                <input id="contact-email" readonly name="email" type="email" class="form-control"
+                  value="<?php echo htmlspecialchars($_SESSION['user']->email ?? ''); ?>">
+              </div>
+            <?php else : ?>
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-user"></i> Ime i prezime</label>
+                <input id="contact-name" name="firstname" type="text" class="form-control"
+                  placeholder="Tvoje ime i prezime" value="<?php echo htmlspecialchars($firstname ?? ''); ?>">
+                <p id="name-error" class="invalid-feedback mb-0" style="display:none;">Molimo unesi ime.</p>
+              </div>
+              <div class="mb-4">
+                <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                <input id="contact-email" name="email" type="email" class="form-control"
+                  placeholder="Tvoj email" value="<?php echo htmlspecialchars($email ?? ''); ?>">
+                <p id="email-error" class="invalid-feedback mb-0" style="display:none;">Email format nije validan.</p>
+              </div>
+            <?php endif; ?>
 
-                <div class="mb-4">
-                  <label class="form-label"><i class="far fa-comment-dots"></i> Poruka</label>
-                  <textarea id="contact-message" name="message" class="form-control" placeholder="Unesi poruku" style="height:110px;"></textarea>
-                  <p id="message-error" class="invalid-feedback mb-0" style="display:none;">Potrebno je uneti bar 20 karaktera.</p>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label"><i class="fas fa-paperclip"></i> Dodajte fajlove</label>
-                  <p class="mb-1" style="font-size:.8rem;color:var(--gray);">(jpg, jpeg, png, pdf) MAX 5MB</p>
-                  <input id="contact-files" accept="image/*,application/pdf" class="form-control" type="file" multiple name="files[]">
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label"><i class="fas fa-calculator"></i> Koliko je <?php echo $number1 . ' + ' . $number2; ?>?</label>
-                  <input id="math-input" name="math" type="number" class="form-control" placeholder="Unesi rezultat">
-                  <p id="math-error" class="invalid-feedback mb-0" style="display:none;">Rezultat nije tačan.</p>
-                </div>
-
-                <input type="hidden" name="result" value="<?php echo $result; ?>">
-                <button id="contact-send-btn" name="contact" type="submit" class="btn btn-primary w-100 scale-btn-2" style="padding:14px;">
-                  POŠALJI <i class="fas fa-check ms-1"></i>
-                </button>
-
-              </form>
+            <div class="mb-4">
+              <label class="form-label"><i class="fas fa-comment-dots"></i> Poruka</label>
+              <textarea id="contact-message" name="message" class="form-control" placeholder="Unesi poruku"></textarea>
+              <p id="message-error" class="invalid-feedback mb-0" style="display:none;">Potrebno je uneti bar 20 karaktera.</p>
             </div>
-          </div>
+
+            <div class="mb-4">
+              <label class="form-label"><i class="fas fa-paperclip"></i> Dodaj fajlove <small style="color:var(--siva);font-weight:400;">(jpg, jpeg, png, pdf — maks. 5MB)</small></label>
+              <input id="contact-files" accept="image/*,application/pdf" class="form-control" type="file" multiple name="files[]">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label"><i class="fas fa-calculator"></i> Koliko je <?php echo $broj1 . ' + ' . $broj2; ?>?</label>
+              <input id="math-input" name="math" type="number" class="form-control" placeholder="Unesi rezultat">
+              <p id="math-error" class="invalid-feedback mb-0" style="display:none;">Rezultat nije tacan.</p>
+            </div>
+
+            <input type="hidden" name="result" value="<?php echo $zbir; ?>">
+            <button id="contact-send-btn" name="contact" type="submit" class="btn btn-primary w-100 scale-btn-2" style="padding:14px; font-size:1rem;">
+              <i class="fas fa-paper-plane me-2"></i>Posalji poruku
+            </button>
+
+          </form>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
 
 <script>
-function heroSearch(form) {
-  const q = form.querySelector('input[name="q"]').value.trim();
+function heroPretraga(form) {
+  var q = document.getElementById('hero-search-input').value.trim();
   if (q) {
     window.location.href = '<?php echo BASE_URL; ?>kursevi?q=' + encodeURIComponent(q);
   }

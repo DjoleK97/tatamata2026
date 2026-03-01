@@ -159,8 +159,8 @@ if (isset($_POST['password'])) {
 
         <div class="login-form-container">
 
-          <h1 class="mb-1">Novi Korisnik</h1>
-          <p class="mb-4">Polja označena <strong class="text-danger">*</strong> su obavezna.</p>
+          <h1 class="mb-1"><i class="fas fa-user-plus me-2" style="color:var(--plava);"></i> Novi korisnik</h1>
+          <p class="mb-4" style="color:var(--siva);">Polja označena <strong class="text-danger">*</strong> su obavezna.</p>
 
           <?php echo $errors['taken_email'] ?? ""; ?>
 
@@ -286,17 +286,20 @@ if (isset($_POST['password'])) {
 
             <div class="not-registered-container d-flex justify-content-between align-items-center">
               <p class="mb-0 d-inline-block niste-reg">Već imaš nalog?</p>
-              <a href="<?php echo BASE_URL . 'prijava'; ?>"><button type="button" class="btn btn-primary scale-btn-2">Prijavi se</button></a>
+              <a href="<?php echo BASE_URL . 'prijava'; ?>">
+                <button type="button" class="btn btn-outline-secondary">
+                  <i class="fas fa-sign-in-alt me-1"></i> Prijavi se
+                </button>
+              </a>
             </div>
 
           </form>
         </div>
 
-		<!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
-			<div class="mt-3">
-			<p class="row justify-content-center" style="color:red; text-align:center;">Napomena:<br><em> Jedan nalog sme da koristi samo jedna osoba sa najviše 2 različita uređaja</em></p>
-			</div>
-		<!-- NAPOMENA ZA MAX BROJ UREDJAJA -->
+        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva);">
+          <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
+          <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
+        </div>
 
         <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL . $redirectTo; ?>">
