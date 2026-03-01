@@ -21,6 +21,7 @@ if (Database::getInstance()->isUserLoggedIn()) {
 }
 
 if (isset($_POST['reset-password'])) {
+  csrf_protect(); // SEC-FIX: CSRF zaštita
   $selectorP = $_POST['selector'];
   $validatorP = $_POST['validator'];
   $password = clean($_POST['password']);
@@ -112,6 +113,7 @@ $validator = $_GET['validator'];
               <p class="kreiraj-p">Kreigrajte novu šifru za prijavu na Vaš nalog.</p>
 
               <form method="POST" class="mb-3">
+              <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
                 <div class="mb-3">
                   <label class="form-label">Šifra <strong class="text-danger">*</strong></label>

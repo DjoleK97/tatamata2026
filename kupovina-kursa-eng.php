@@ -28,6 +28,7 @@ $id = clean($_GET['id']);
 $course = Database::getInstance()->getCourse($id);
 
 if (isset($_POST['contact'])) {
+  csrf_protect(); // SEC-FIX: CSRF zaštita
 
   $data = array(
     "course_id" => $id,
@@ -189,6 +190,7 @@ if (isset($_POST['contact'])) {
               <hr class="hr">
             </h5>
             <form enctype="multipart/form-data" method="POST">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
               <p class="m-0 mb-1" style="font-weight: 600;">Poslato putem:</p>
 

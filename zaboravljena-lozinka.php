@@ -21,6 +21,7 @@ if (Database::getInstance()->isUserLoggedIn()) {
 }
 
 if (isset($_POST['reset-password'])) {
+  csrf_protect(); // SEC-FIX: CSRF zaštita
   $email = clean($_POST['email']);
 
   $errors = array();
@@ -98,6 +99,7 @@ if (isset($_POST['reset-password'])) {
           <?php echo $errors['not_taken_email'] ?? ""; ?>
 
           <form method="POST" class="mb-3">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
             <div class="mb-3">
               <label class="form-label">Email <strong class="text-danger">*</strong></label>

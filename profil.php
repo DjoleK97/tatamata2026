@@ -22,6 +22,7 @@ if (!Database::getInstance()->isUserLoggedIn()) {
 $displayCollapse = false;
 
 if (isset($_POST['update-profile'])) {
+  csrf_protect(); // SEC-FIX: CSRF zaštita
   $schoolTypeIDG  = clean($_POST['school_type_id']);
 
   if (Database::getInstance()->updateUserProfile($schoolTypeIDG, $_SESSION['user']->id)) {
@@ -34,6 +35,7 @@ if (isset($_POST['update-profile'])) {
 }
 
 if (isset($_POST['change-password'])) {
+  csrf_protect(); // SEC-FIX: CSRF zaštita
   $oldPassword = clean($_POST['old_password']);
   $password = clean($_POST['password']);
   $password2 = clean($_POST['password2']);
@@ -42,8 +44,12 @@ if (isset($_POST['change-password'])) {
 
   if (empty($oldPassword)) {
     $errors['old_password'] = '<div class="mb-0 invalid-feedback">Molimo Vas unesite staru šifru.</div>';
-  } else if (Database::getInstance()->getPasswordForUser($_SESSION['user']->id) != md5(md5($oldPassword))) {
-    $errors['old_password'] = '<div class="mb-0 invalid-feedback">Stara šifra nije tačna.</div>';
+  } else {
+    // SEC-FIX: password_verify() za bcrypt + md5 fallback za stare naloge
+    $storedHash = Database::getInstance()->getPasswordForUser($_SESSION['user']->id);
+    if (!password_verify($oldPassword, $storedHash) && $storedHash !== md5(md5($oldPassword))) {
+      $errors['old_password'] = '<div class="mb-0 invalid-feedback">Stara šifra nije tačna.</div>';
+    }
   }
 
   if (empty($password)) {
@@ -94,6 +100,7 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
         <li class="list-group-item"><span class="profile-span">Email: </span><?php echo $_SESSION['user']->email; ?></li>
         <li class="list-group-item"><span class="profile-span">Nivo obrazovanja: </span>
           <form method="POST">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
             <select name="school_type_id" class="form-select" aria-label="Default select example">
               <?php foreach ($schoolTypes as $schoolType) : ?>
                 <option value="<?php echo $schoolType['school_type_id'] ?? "1"; ?>" <?php if ($schoolType['school_type_id'] == $_SESSION['user']->school_type_id) echo 'selected'; ?>><?php echo $schoolType['school_type_name'] ?? "Error"; ?></option>
@@ -117,6 +124,7 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
                                     } ?>" id="collapseExample">
             <div class="card card-body">
               <form method="POST" class="mb-2">
+                <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
                 <div class="mb-3">
                   <label class="form-label">Stara šifra <strong class="text-danger">*</strong></label>

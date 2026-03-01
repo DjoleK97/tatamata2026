@@ -17,6 +17,7 @@ require 'includes/config.php';
 if (!isset($_POST['contact'])) {
   exit;
 }
+csrf_protect(); // SEC-FIX: CSRF zaštita
 
 if (!empty($_FILES['files']['name'][0])) { // Da li je poslao neke fajlove
   $files = $_FILES['files'];

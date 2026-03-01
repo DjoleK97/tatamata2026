@@ -240,6 +240,7 @@ if (isset($_POST['contact'])) {
               <hr class="hr">
             </h5>
             <form enctype="multipart/form-data" method="POST">
+            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
               <div class="mb-4">
                 <label class="form-label" style="font-weight: 600;"><i class="fas fa-paperclip"></i> Slika potvrde: </label>
