@@ -19,11 +19,10 @@ header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
 header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://kit.fontawesome.com https://cdn.plyr.io https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.plyr.io https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://kit.fontawesome.com https://ka-f.fontawesome.com https://cdnjs.cloudflare.com https://fonts.gstatic.com; connect-src 'self' https://ka-f.fontawesome.com https://www.google-analytics.com; media-src 'self'; frame-ancestors 'self';");
 
 $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/')); //  /prijava /registracija /index.php
-// echo $currentPage;
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sr">
 
 <head>
   <meta charset="UTF-8">
@@ -33,9 +32,9 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
   <meta name="HandheldFriendly" property="True">
   <meta name="MobileOptimized" content="320">
   <meta name="type" property="og:type" content="website">
-  <meta name="title" property="og:title" content="TataMata | Matiš na lakši način">
+  <meta name="title" property="og:title" content="TataMata | Matematika na laksi nacin">
   <meta name="author" content="TataMata">
-  <meta property="og:description" content="Skapiraj da možeš da skapiraš.">
+  <meta property="og:description" content="Video kursevi matematike za osnovnu skolu, srednju skolu i fakultet.">
   <meta property="og:url" content="https://tatamata.rs">
 
   <?php if ($currentPage != '/kupovina-kursa.php') { ?>
@@ -94,109 +93,78 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
         <div class="navbar-container-custom fixed-navbar-bg">
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid navbar-container">
-              <a class="navbar-brand scale-btn-2" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt=""></a>
+              <a class="navbar-brand" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt="TataMata"></a>
               <div class="mobile-nav-container d-flex justify-content-between">
-                <a class="brand-mobile" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt=""></a>
+                <a class="brand-mobile" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt="TataMata"></a>
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
               </div>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="navbar-nav left-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                   <?php if (Database::getInstance()->isUserLoggedIn()) { ?>
                     <li class="nav-item">
-                      <a class="nav-link me-4 moji-kursevi scale-btn-2" href="<?php echo BASE_URL . "mojikursevi"; ?>">MOJI KURSEVI</a>
+                      <a class="nav-link moji-kursevi" href="<?php echo BASE_URL . "mojikursevi"; ?>">Moji kursevi</a>
                     </li>
                   <?php } ?>
                   <li class="nav-item">
-                    <a class="nav-link active scale-btn-2 skrr" href="<?php echo BASE_URL . "kursevi"; ?>">KURSEVI</a>
-                  </li>
-                </ul>
-
-                <ul class="navbar-nav left-nav mx-auto mb-2 mb-lg-0">
-                  <!-- <li class="nav-item">
-                    <a class="nav-link middle-nav ms-0 close-nav-link" href="<?php echo BASE_URL . "pocetna#o-brendu"; ?>">BREND</a>
-                  </li> -->
-                  <li class="nav-item ms-0">
-                    <a class="nav-link middle-nav close-nav-link" href="<?php echo BASE_URL . "pocetna#usluge"; ?>">USLUGE</a>
-                  </li>
-                  <li class="nav-item ms-0">
-                    <a class="nav-link middle-nav close-nav-link" href="<?php echo BASE_URL . "pocetna#testimonials"; ?>">PREPORUKE</a>
+                    <a class="nav-link active-link" href="<?php echo BASE_URL . "kursevi"; ?>">Kursevi</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link middle-nav close-nav-link" href="<?php echo BASE_URL . "pocetna#faq"; ?>">NAJČEŠĆA PITANJA</a>
+                    <a class="nav-link close-nav-link" href="<?php echo BASE_URL . "pocetna#usluge"; ?>">Usluge</a>
                   </li>
-                  <li class="nav-item contact-nav">
-                    <a class="nav-link middle-nav close-nav-link" href="<?php echo BASE_URL . "pocetna#kontakt"; ?>">KONTAKT</a>
+                  <li class="nav-item">
+                    <a class="nav-link close-nav-link" href="<?php echo BASE_URL . "pocetna#testimonials"; ?>">Preporuke</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link close-nav-link" href="<?php echo BASE_URL . "pocetna#faq"; ?>">FAQ</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link close-nav-link" href="<?php echo BASE_URL . "pocetna#kontakt"; ?>">Kontakt</a>
                   </li>
                 </ul>
 
-                <ul class="navbar-nav mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
                   <?php if (!Database::getInstance()->isUserLoggedIn()) { ?>
                     <li class="nav-item">
-                      <a class="nav-link prijava-nav" href="<?php echo BASE_URL . "prijava"; ?>">PRIJAVI SE</a>
+                      <a class="nav-link prijava-nav" href="<?php echo BASE_URL . "prijava"; ?>">Prijavi se</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link registracija-nav scale-btn-2" href="<?php echo BASE_URL . "registracija"; ?>">NOVI KORISNIK</a>
+                      <a class="nav-link registracija-nav" href="<?php echo BASE_URL . "registracija"; ?>">Kreiraj nalog <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i></a>
                     </li>
                   <?php } else { ?>
                     <li class="nav-item dropdown">
                       <a class="nav-link logged-in-as<?php if (isset($currentPage) && $currentPage == '/profil.php') echo ' active'; ?> dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-user"></i>&nbsp; <?php echo $_SESSION['user']->firstname . " " . $_SESSION['user']->lastname; ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill rotate" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-caret-down-fill rotate ms-1" viewBox="0 0 16 16">
                           <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                         </svg>
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
                           <a class="dropdown-item" href="<?php echo BASE_URL . "profil"; ?>">
-                            <div class="row">
-                              <div class="col">Profil</div>
-                              <div class="col text-right" style="text-align: right;"><i class="far fa-user"></i></div>
-                            </div>
+                            <i class="far fa-user"></i> Profil
                           </a>
                         </li>
-                        <li>
-                          <hr class="dropdown-divider">
-                        </li>
+                        <li><hr class="dropdown-divider"></li>
                         <li>
                           <a class="dropdown-item" href="<?php echo BASE_URL . "transakcije"; ?>">
-                            <div class="row">
-                              <div class="col">Transakcije</div>
-                              <div class="col text-right" style="text-align: right;"><i class="fas fa-euro-sign"></i></div>
-                            </div>
+                            <i class="fas fa-euro-sign"></i> Transakcije
                           </a>
                         </li>
-                        <li>
-                          <hr class="dropdown-divider">
-                        </li>
+                        <li><hr class="dropdown-divider"></li>
                         <?php if ($_SESSION['user']->is_admin) { ?>
                           <li>
                             <a class="dropdown-item" href="<?php echo BASE_URL . "admin/overview"; ?>">
-                              <div class="row">
-                                <div class="col">Admin</div>
-                                <div class="col" style="text-align: right;">
-                                  <i class="fas fa-crown"></i>
-                                </div>
-                              </div>
+                              <i class="fas fa-crown"></i> Admin
                             </a>
                           </li>
-                          <li>
-                            <hr class="dropdown-divider">
-                          </li>
+                          <li><hr class="dropdown-divider"></li>
                         <?php } ?>
                         <li>
                           <a class="dropdown-item" href="<?php echo BASE_URL . "odjava"; ?>">
-                            <div class="row">
-                              <div class="col">Odjavi se</div>
-                              <div class="col text-right" style="text-align: right;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
-                                  <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
-                                </svg>
-                              </div>
-                            </div>
+                            <i class="fas fa-sign-out-alt"></i> Odjavi se
                           </a>
                         </li>
                       </ul>
@@ -207,6 +175,5 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
               </div>
             </div>
           </nav>
-          <!-- NAVBAR -->
         </div>
       <?php } ?>
