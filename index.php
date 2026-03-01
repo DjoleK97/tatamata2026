@@ -33,7 +33,7 @@ include_once 'includes/header.php';
 
     <p class="hero-subtitle">
       Sveobuhvatni video kursevi, dostupni kad god poželiš —
-      detaljno objašnjeni i lako razumljivi.
+      detaljno objašnjeni i lako razumljivi. Samo za tebe.
     </p>
 
     <!-- Search bar -->
