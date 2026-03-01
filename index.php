@@ -27,7 +27,7 @@ include_once 'includes/header.php';
     <div class="hero-eyebrow">📚 Online kursevi matematike</div>
 
     <h1 class="hero-title">
-      Matiš matematiku<br>
+      Nauči matematiku<br>
       <span class="highlight">na lakši način</span>
     </h1>
 
