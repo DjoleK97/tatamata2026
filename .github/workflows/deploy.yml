@@ -11,7 +11,8 @@ jobs:
       - name: Deploy
         run: |
           cd /var/www/tatamata
-          git pull origin master
+          git fetch origin master
+          git reset --hard origin/master
           composer install --no-dev --no-interaction
           sudo chown -R www-data:www-data /var/www/tatamata
           sudo chmod -R 755 /var/www/tatamata
