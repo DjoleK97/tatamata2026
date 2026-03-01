@@ -1,15 +1,14 @@
 name: Deploy to Server
-
 on:
   push:
     branches: [ master ]
-
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
       - name: Deploy
         run: |
+          sudo chown -R $USER:$USER /var/www/tatamata
           cd /var/www/tatamata
           git fetch origin master
           git reset --hard origin/master
