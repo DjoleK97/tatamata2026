@@ -35,30 +35,30 @@ $grades = Database::getInstance()->getAllGrades();
     <?php printFormatedFlashMessage("unauthorized_access"); ?>
     <?php printFormatedFlashMessage("login_success_message"); ?>
 
-    <div class="row lewrapper">
-      <h1 class="kursevi-h1 ps-0 pb-2 col-auto">
-        <i class="fas fa-graduation-cap kursevi-h1-ikona"></i>
-        Kursevi
-      </h1>
+    <!-- Page Header -->
+    <div class="stranica-header animiraj">
+      <h1><i class="fas fa-graduation-cap"></i> Kursevi</h1>
+      <p>Izaberi nivo obrazovanja i pronadji kurs koji ti treba.</p>
+    </div>
 
+    <!-- Filter Toolbar -->
+    <div class="lewrapper animiraj">
       <div class="col-auto skola-container">
         <div id="osnovna-btn" class="skola col-auto d-inline-block <?php if (!Database::getInstance()->isUserLoggedIn()) echo 'active';
                                                                     else if ($_SESSION['user']->school_type_id != "2" && $_SESSION['user']->school_type_id != '3') echo "active"; ?>">
-          osnovna<br>
-          škola
+          Osnovna skola
         </div>
         <div id="srednja-btn" class="skola col-auto d-inline-block <?php if (Database::getInstance()->isUserLoggedIn() && $_SESSION['user']->school_type_id == "2") echo "active"; ?>">
-          srednja<br>
-          škola
+          Srednja skola
         </div>
         <div id="fakultet-btn" class="skola col-auto d-inline-block <?php if (Database::getInstance()->isUserLoggedIn() && $_SESSION['user']->school_type_id == "3") echo "active"; ?>">
-          Fakultet <br>
+          Fakultet
         </div>
       </div>
 
       <div class="col-auto text-white ms-auto g-0 pretraga-col" style="width: 300px;">
         <div class="input-group flex-nowrap">
-          <input type="text" class="form-control pretraga-input" placeholder="Pretraži...">
+          <input type="text" class="form-control pretraga-input" placeholder="Pretrazi kurseve...">
           <button class="btn yellow-btn" style="pointer-events: none;" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
         </div>
         <div class="search-results w-100">
@@ -66,17 +66,16 @@ $grades = Database::getInstance()->getAllGrades();
       </div>
     </div>
 
-    <!-- ULOGOVAN ILI NIJE -->
+    <!-- Kursevi po razredima -->
     <?php foreach ($grades as $grade) : ?>
       <?php if ($grade['grade_school_type_id' == 1] && $grade['grade_id'] <= 4) { ?>
         <?php continue; ?>
       <?php } ?>
-      <div class="row mt-4 <?php if ($grade['grade_school_type_id'] == 1) echo "osnovnaskoladiv";
-                                      else if ($grade['grade_school_type_id'] == 2) echo 'srednjaskoladiv';
-                                      else echo 'fakultetskoladiv';                                       ?>">
+      <div class="row mt-4 animiraj <?php if ($grade['grade_school_type_id'] == 1) echo "osnovnaskoladiv";
+                                    else if ($grade['grade_school_type_id'] == 2) echo 'srednjaskoladiv';
+                                    else echo 'fakultetskoladiv'; ?>">
         <div class="col-12 g-0 d-flex mb-4">
           <div class="grade-name col-auto me-3 mt-1">
-            <!-- Prvo gledamo da li je ulogovan, ako nije prikazi sve kurseve, ako jeste gledamo iz koje zemlje je -->
             <?php if (isset($_SESSION['user'])) { ?>
               <?php if (strtolower($_SESSION['user']->country) == 'cg' && strtolower($grade['grade_name']) != 'mala matura') { ?>
                 <?php echo $grade['grade_name'] ?? "Error"; ?>
@@ -103,9 +102,9 @@ $grades = Database::getInstance()->getAllGrades();
                     <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>">
                       <div class="course-img">
                         <?php if ($course['live']) { ?>
-                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="Image error">
+                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="<?php echo htmlspecialchars($course['name']); ?>">
                         <?php } else { ?>
-                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/upripremi.png" alt="Image error">
+                          <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/upripremi.png" alt="U pripremi">
                         <?php } ?>
                       </div>
                     </a>

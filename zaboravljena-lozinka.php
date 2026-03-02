@@ -71,8 +71,6 @@ if (isset($_POST['reset-password'])) {
             <div class="alert alert-warning alert-dismissible show" role="alert">
               <strong>Email uspešno poslat!</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fas fa-times"></i></button>
             </div>';
-
-        // header("Location: ")
       }
     }
   }
@@ -84,32 +82,44 @@ if (isset($_POST['reset-password'])) {
 
 <?php printFormatedFlashMessage("not_taken_email"); ?>
 
-<!-- -------- REGISTRACIJA ---------- -->
+<!-- -------- ZABORAVLJENA LOZINKA ---------- -->
 <section id="prijave" class="login-form">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-8 col-sm-10 col-10">
+  <div class="row g-0" style="min-height:100vh;">
 
-      <?php printFormatedFlashMessage("password_reset_success_message"); ?>
+    <!-- Levi panel (branding) -->
+    <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
+      <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
+      <i class="fas fa-key mb-4" style="font-size:3rem; color:var(--zuta); opacity:.6; position:relative; z-index:1;"></i>
+      <h2>Resetuj svoju<br><span class="highlight">lozinku</span></h2>
+    </div>
+
+    <!-- Desni panel (forma) -->
+    <div class="col-lg-7 auth-panel-desno">
+      <div style="max-width:460px; width:100%;">
+
+        <?php printFormatedFlashMessage("password_reset_success_message"); ?>
 
         <div class="login-form-container">
-          <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravili ste šifru?</h1>
-          <p style="color:var(--siva);">Poslaćemo vam email sa uputstvom za promenu šifre.</p>
+          <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravljena sifra?</h1>
+          <p class="auth-subtitle">Poslacemo ti email sa uputstvom za promenu sifre.</p>
 
           <?php echo $errors['not_taken_email'] ?? ""; ?>
 
           <form method="POST" class="mb-3">
             <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
-            <div class="mb-3">
+            <div class="mb-4">
               <label class="form-label">Email <strong class="text-danger">*</strong></label>
-              <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['not_taken_email'])) echo 'is-invalid';
-                                                                    else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+              <div class="input-ikona">
+                <i class="far fa-envelope"></i>
+                <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['not_taken_email'])) echo 'is-invalid';
+                                                                      else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+              </div>
               <?php echo $errors['email'] ?? ""; ?>
             </div>
 
             <button name="reset-password" type="submit" class="confirm-btn btn btn-primary d-block w-100">
-              <i class="fas fa-paper-plane me-2"></i> Pošalji uputstvo
+              <i class="fas fa-paper-plane me-2"></i> Posalji uputstvo
             </button>
 
           </form>
@@ -117,14 +127,14 @@ if (isset($_POST['reset-password'])) {
 
         <div class="mt-4 text-center go-back">
           <a href="<?php echo BASE_URL; ?>prijava">
-            <i class="fas fa-arrow-left"></i> Nazad
+            <i class="fas fa-arrow-left"></i> Nazad na prijavu
           </a>
         </div>
 
       </div>
     </div>
+
   </div>
 </section>
-<!-- -------- REGISTRACIJA ---------- -->
 
 <?php include 'includes/footer.php'; ?>

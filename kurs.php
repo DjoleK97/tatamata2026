@@ -102,15 +102,25 @@ if (isset($_POST['contact'])) {
 
       <div class="row justify-content-center mt-5">
         <div class="col-md-6 text-center py-5">
-          <i class="fas fa-exclamation-circle" style="font-size:3rem; color:var(--siva); opacity:.4;"></i>
-          <h2 class="mt-3" style="color:var(--siva);">Kurs ne postoji.</h2>
-          <a href="<?php echo BASE_URL; ?>kursevi" class="btn btn-primary mt-3">
-            <i class="fas fa-arrow-left me-2"></i> Nazad na kurseve
-          </a>
+          <div class="prazno-stanje">
+            <i class="fas fa-exclamation-circle prazno-ikona"></i>
+            <h3>Kurs ne postoji.</h3>
+            <p>Kurs koji trazite nije pronadjen ili je uklonjen.</p>
+            <a href="<?php echo BASE_URL; ?>kursevi" class="btn btn-primary">
+              <i class="fas fa-arrow-left me-2"></i> Nazad na kurseve
+            </a>
+          </div>
         </div>
       </div>
 
     <?php } else { ?>
+
+      <!-- Breadcrumb -->
+      <div class="kurs-breadcrumb">
+        <a href="<?php echo BASE_URL; ?>kursevi">Kursevi</a>
+        <span> / </span>
+        <?php echo htmlspecialchars($course['name'] ?? 'Kurs'); ?>
+      </div>
 
       <?php printFormatedFlashMessage("buy_course_success_message"); ?>
       <?php printFormatedFlashMessage("contact_form_success"); ?>
@@ -380,24 +390,23 @@ if (isset($_POST['contact'])) {
 
 <!-- Modal -->
 <div class="modal fade morate-biti-prijavljeni-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Obaveštenje <i class="fas fa-info-circle"></i></h5>
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Potrebna prijava</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        Moraš da <strong>imaš nalog</strong> da bi mogao da pristupiš kursu.
+      <div class="modal-body text-center">
+        <i class="fas fa-user-lock mb-3" style="font-size:2.5rem; color:var(--plava); opacity:.3;"></i>
+        <p>Da bi pristupio ovom kursu, potrebno je da imas nalog na platformi.</p>
       </div>
-      <div class="modal-footer d'flex justify-content-between text-center">
-        <div class="col">
-          <strong><em>Već imam nalog</em></strong> <br>
-          <a href="<?php echo BASE_URL . "prijava" ?>" type="button" class="btn btn-primary zutob fw-bold">Postojeći korisnik</a>
-        </div>
-        <div class="col robz">
-          <strong><em>Nemam nalog</em></strong> <br>
-          <a href="<?php echo BASE_URL . "registracija" ?>" type="button" class="btn btn-outline-secondary regiregi zutob fw-bold">Novi korisnik</a>
-        </div>
+      <div class="modal-footer justify-content-center" style="gap:12px;">
+        <a href="<?php echo BASE_URL . "prijava" ?>" class="btn btn-primary">
+          <i class="fas fa-sign-in-alt me-2"></i> Prijavi se
+        </a>
+        <a href="<?php echo BASE_URL . "registracija" ?>" class="btn btn-outline-plava">
+          <i class="fas fa-user-plus me-2"></i> Kreiraj nalog
+        </a>
       </div>
     </div>
   </div>

@@ -61,42 +61,44 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
 
       <?php if (Database::getInstance()->isUserBlocked($_SESSION['user']->id)) { ?>
 
-        <div id="moji-kursevi-blocked" class="col">
-          <h2 class="text-uppercase text-danger fw-bold"><i class="fas fa-ban me-2"></i> Tvoj nalog je blokiran</h2>
-          &bull; Primetili smo da je na ovom nalogu prekršen dozvoljen broj uređaja sa kojim se može pristupiti profilu.<br>
-          &bull; Svakom korisniku je dozvoljen pristup sa <strong>najviše 2 uređaja</strong><br>
-          &bull; <strong>Uprkos prethodnom upozorenju koje ste dobili, nastavili ste da delite Vaš nalog sa drugim osobama, što je <span style='color: red;'>strogo zabranjeno</span> i krši uslove korišćenja sajta tatamata.rs</strong><br>
-          &bull; Iz tog razloga je onemogućen pristup kursevima koje ste kupili.<br>
-          &bull; Za sva pitanja i informacije javite se putem <a href="<?php echo BASE_URL ?>pocetna#kontakt" class="text-decoration-none kontakt-forme-link" target="_blank">kontakt forme</a>.<br>
+        <div id="moji-kursevi-blocked" class="col animiraj">
+          <h2><i class="fas fa-ban me-2"></i> Tvoj nalog je blokiran</h2>
+          <p>&bull; Primetili smo da je na ovom nalogu prekrsen dozvoljen broj uredjaja sa kojim se moze pristupiti profilu.</p>
+          <p>&bull; Svakom korisniku je dozvoljen pristup sa <strong>najvise 2 uredjaja</strong></p>
+          <p>&bull; <strong>Uprkos prethodnom upozorenju koje ste dobili, nastavili ste da delite Vas nalog sa drugim osobama, sto je <span style='color: red;'>strogo zabranjeno</span> i krsi uslove koriscenja sajta tatamata.rs</strong></p>
+          <p>&bull; Iz tog razloga je onemogucen pristup kursevima koje ste kupili.</p>
+          <p>&bull; Za sva pitanja i informacije javite se putem <a href="<?php echo BASE_URL ?>pocetna#kontakt" class="text-decoration-none kontakt-forme-link" target="_blank">kontakt forme</a>.</p>
         </div>
 
       <?php } else { ?>
 
         <?php if (isset($courses) && count($courses) == 0) { ?>
-          <div class="col-lg-6 offset-lg-3 text-center">
-            <div class="py-5">
-            <i class="fas fa-book-open" style="font-size:3.5rem; color:var(--plava); opacity:.35;"></i>
-            <h3 class="mt-4" style="color:var(--siva);">Još uvek nemate ni jedan kurs.</h3>
-            <a class="text-decoration-none" href="<?php echo BASE_URL; ?>kursevi">
-              <button class="mt-4 register-btn btn btn-primary">
-                <i class="fas fa-graduation-cap me-2"></i> Pogledaj dostupne kurseve
-              </button>
-            </a>
-          </div>
+          <div class="col-lg-6 offset-lg-3 text-center animiraj">
+            <div class="prazno-stanje">
+              <i class="fas fa-book-open prazno-ikona"></i>
+              <h3>Nemas nijedan kurs</h3>
+              <p>Pogledaj ponudu kurseva i pocni sa ucenjem.</p>
+              <a href="<?php echo BASE_URL; ?>kursevi" class="btn btn-primary">
+                <i class="fas fa-graduation-cap me-2"></i> Pogledaj kurseve
+              </a>
+            </div>
           </div>
         <?php } else { ?>
-          <h1 class="mb-5"><i class="fas fa-play-circle me-2" style="color:var(--plava);"></i> Moji Kursevi</h1>
+          <div class="col-12 mb-4 animiraj">
+            <h1><i class="fas fa-play-circle me-2" style="color:var(--plava);"></i> Moji kursevi</h1>
+          </div>
 
           <?php foreach ($courses as $course) : ?>
-            <div class="course-col-container col-xl-3 col-lg-4 col-md-4 col-sm-4 col-6">
-              <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>">
-                <div class="course-img">
-                  <img class="scale-btn-2" style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="Image error">
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 mb-4 animiraj">
+              <div class="course-col-container">
+                <a href="<?php echo BASE_URL; ?>kurs/<?php echo $course['id']; ?>">
+                  <div class="course-img">
+                    <img style="width: 100%;" src="<?php echo BASE_URL; ?>public/images/courses/<?php echo $course['img']; ?>" alt="<?php echo htmlspecialchars($course['name']); ?>">
+                  </div>
+                </a>
+                <div class="course-name text-center mt-2">
+                  <?php echo $course['name']; ?>
                 </div>
-              </a>
-
-              <div class="course-name text-center mt-2">
-                <?php echo $course['name']; ?>
               </div>
             </div>
           <?php endforeach; ?>
@@ -113,18 +115,18 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Obaveštenje <i class="fas fa-info-circle"></i></h5>
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-info-circle me-2" style="color:var(--plava);"></i> Obavestenje</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         Morate biti prijavljeni da biste mogli da kupite kurs.
       </div>
-      <div class="modal-footer">
-        <a href="<?php echo BASE_URL . "prijava" ?>" type="button" class="btn btn-primary">Prijavi se</a>
-        <a href="<?php echo BASE_URL . "registracija" ?>" type="button" class="btn btn-outline-secondary">Registruj se</a>
+      <div class="modal-footer justify-content-center" style="gap:12px;">
+        <a href="<?php echo BASE_URL . "prijava" ?>" class="btn btn-primary"><i class="fas fa-sign-in-alt me-2"></i> Prijavi se</a>
+        <a href="<?php echo BASE_URL . "registracija" ?>" class="btn btn-outline-plava"><i class="fas fa-user-plus me-2"></i> Kreiraj nalog</a>
       </div>
     </div>
   </div>
