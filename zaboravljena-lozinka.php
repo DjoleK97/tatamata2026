@@ -80,61 +80,50 @@ if (isset($_POST['reset-password'])) {
 
 <?php include 'includes/header.php'; ?>
 
-<?php printFormatedFlashMessage("not_taken_email"); ?>
-
 <!-- -------- ZABORAVLJENA LOZINKA ---------- -->
 <section id="prijave" class="login-form">
-  <div class="row g-0" style="min-height:100vh;">
 
-    <!-- Levi panel (branding) -->
-    <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
-      <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
-      <i class="fas fa-key mb-4" style="font-size:3rem; color:var(--zuta); opacity:.6; position:relative; z-index:1;"></i>
-      <h2>Resetuj svoju<br><span class="highlight">lozinku</span></h2>
-    </div>
+  <div class="auth-panel-desno">
+    <div style="max-width:460px; width:100%;">
 
-    <!-- Desni panel (forma) -->
-    <div class="col-lg-7 auth-panel-desno">
-      <div style="max-width:460px; width:100%;">
+      <?php printFormatedFlashMessage("password_reset_success_message"); ?>
+      <?php printFormatedFlashMessage("not_taken_email"); ?>
 
-        <?php printFormatedFlashMessage("password_reset_success_message"); ?>
+      <div class="login-form-container">
+        <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravljena sifra?</h1>
+        <p class="auth-subtitle">Poslacemo ti email sa uputstvom za promenu sifre.</p>
 
-        <div class="login-form-container">
-          <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravljena sifra?</h1>
-          <p class="auth-subtitle">Poslacemo ti email sa uputstvom za promenu sifre.</p>
+        <?php echo $errors['not_taken_email'] ?? ""; ?>
 
-          <?php echo $errors['not_taken_email'] ?? ""; ?>
+        <form method="POST" class="mb-3">
+          <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
-          <form method="POST" class="mb-3">
-            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
-
-            <div class="mb-4">
-              <label class="form-label">Email <strong class="text-danger">*</strong></label>
-              <div class="input-ikona">
-                <i class="far fa-envelope"></i>
-                <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['not_taken_email'])) echo 'is-invalid';
-                                                                      else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
-              </div>
-              <?php echo $errors['email'] ?? ""; ?>
+          <div class="mb-4">
+            <label class="form-label">Email <strong class="text-danger">*</strong></label>
+            <div class="input-ikona">
+              <i class="far fa-envelope"></i>
+              <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['not_taken_email'])) echo 'is-invalid';
+                                                                    else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
             </div>
+            <?php echo $errors['email'] ?? ""; ?>
+          </div>
 
-            <button name="reset-password" type="submit" class="confirm-btn btn btn-primary d-block w-100">
-              <i class="fas fa-paper-plane me-2"></i> Posalji uputstvo
-            </button>
+          <button name="reset-password" type="submit" class="btn btn-primary d-block w-100">
+            <i class="fas fa-paper-plane me-2"></i> Posalji uputstvo
+          </button>
 
-          </form>
-        </div>
-
-        <div class="mt-4 text-center go-back">
-          <a href="<?php echo BASE_URL; ?>prijava">
-            <i class="fas fa-arrow-left"></i> Nazad na prijavu
-          </a>
-        </div>
-
+        </form>
       </div>
-    </div>
 
+      <div class="mt-4 text-center go-back">
+        <a href="<?php echo BASE_URL; ?>prijava">
+          <i class="fas fa-arrow-left"></i> Nazad na prijavu
+        </a>
+      </div>
+
+    </div>
   </div>
+
 </section>
 
 <?php include 'includes/footer.php'; ?>

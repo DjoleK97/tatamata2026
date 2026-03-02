@@ -145,6 +145,49 @@ p { margin: 0 0 1rem; }
   box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }
 
+/* Transparent navbar on homepage (before scrolling past hero) */
+#body-container.home .fixed-navbar-bg:not(.scrolled) {
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .nav-link {
+  color: rgba(255,255,255,.8) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .nav-link:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.12) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .nav-link.active-link,
+#body-container.home .fixed-navbar-bg:not(.scrolled) .moji-kursevi {
+  color: var(--zuta) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .prijava-nav {
+  color: rgba(255,255,255,.8) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .registracija-nav {
+  background: rgba(255,255,255,.15) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  box-shadow: none;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .registracija-nav:hover {
+  background: rgba(255,255,255,.28) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .navbar-brand img,
+#body-container.home .fixed-navbar-bg:not(.scrolled) .brand-mobile img {
+  filter: brightness(0) invert(1);
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .logged-in-as {
+  color: rgba(255,255,255,.9) !important;
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .navbar-toggler {
+  border-color: rgba(255,255,255,.4);
+}
+#body-container.home .fixed-navbar-bg:not(.scrolled) .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255%2C255%2C255%2C0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .navbar { height: var(--nav-h); padding: 0 28px; }
 .navbar-container { max-width: var(--max-sirina); margin: 0 auto; }
 .navbar-brand img { height: 36px; width: auto; }
@@ -761,7 +804,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 
 .auth-panel-desno {
   flex: 1;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 48px 32px;
   background: var(--siva-svetla);
 }

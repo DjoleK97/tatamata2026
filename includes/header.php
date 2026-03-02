@@ -67,10 +67,6 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
   <?php include_once "includes/googleAnal.php"; ?>
 
-  <!-- REGISTER -->
-  <?php if ($currentPage == '/registracija.php') { ?>
-    <script defer src="<?php echo BASE_URL; ?>public/js/register.js"></script>
-  <?php } ?>
 </head>
 
 <body id="style-7">
@@ -84,9 +80,6 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
 
   <div id="body-container" class="<?php if ($currentPage == '/index.php') echo "home"; ?>">
 
-    <?php if ($currentPage == '/index.php') { ?>
-      <div class="max-width-90">
-      <?php } ?>
 
       <?php if ($currentPage != '/prijava.php' && $currentPage != '/registracija.php' && $currentPage != '/zaboravljena-lozinka.php' && $currentPage != '/kreiraj-novu-sifru.php') { ?>
         <!-- NAVBAR -->
