@@ -147,192 +147,135 @@ if (isset($_POST['password'])) {
 
 <!-- -------- REGISTRACIJA ---------- -->
 <section id="prijave" class="login-form">
-  <div class="row g-0" style="min-height:100vh;">
 
-    <!-- Levi panel (branding) -->
-    <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
-      <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
-      <h2>Matematika moze<br>da bude <span class="highlight">laka</span></h2>
-      <div class="auth-stats">
-        <div class="auth-stat">
-          <span class="auth-stat-num">40+</span>
-          <span class="auth-stat-lbl">Kurseva</span>
-        </div>
-        <div class="auth-stat">
-          <span class="auth-stat-num">2000+</span>
-          <span class="auth-stat-lbl">Ucenika</span>
-        </div>
-        <div class="auth-stat">
-          <span class="auth-stat-num">500+</span>
-          <span class="auth-stat-lbl">Video lekcija</span>
-        </div>
+  <div class="auth-panel-desno">
+    <div style="max-width:520px; width:100%;">
+
+      <div class="login-form-container">
+
+        <h1 class="mb-1"><i class="fas fa-user-plus me-2" style="color:var(--plava);"></i> Kreiraj nalog</h1>
+        <p class="auth-subtitle">Napravi nalog i pocni da ucis matematiku. Polja sa <strong class="text-danger">*</strong> su obavezna.</p>
+
+        <?php echo $errors['taken_email'] ?? ""; ?>
+
+        <form id="register-form" method="POST">
+
+          <div class="mb-4">
+            <label class="form-label">Ime <strong class="text-danger">*</strong></label>
+            <input name="firstname" type="text" class="form-control <?php if (isset($errors['firstname'])) echo 'is-invalid';
+                                                                    else if (isset($firstname)) echo 'is-valid'; ?>" placeholder="Unesite ime" value="<?php echo $firstname ?? ""; ?>">
+            <?php echo $errors['firstname'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Prezime <strong class="text-danger">*</strong></label>
+            <input name="lastname" type="text" class="form-control <?php if (isset($errors['lastname'])) echo 'is-invalid';
+                                                                    else if (isset($lastname)) echo 'is-valid'; ?>" placeholder="Unesite prezime" value="<?php echo $lastname ?? ""; ?>">
+            <?php echo $errors['lastname'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Email <strong class="text-danger">*</strong></label>
+            <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['taken_email'])) echo 'is-invalid';
+                                                                  else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
+            <?php echo $errors['email'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Šifra <strong class="text-danger">*</strong></label>
+            <div class="input-ikona">
+              <i class="fas fa-lock"></i>
+              <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
+            </div>
+            <?php echo $errors['password'] ?? ""; ?>
+            <?php echo $errors['password_confirm'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Potvrda šifre <strong class="text-danger">*</strong></label>
+            <div class="input-ikona">
+              <i class="fas fa-lock"></i>
+              <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Ponovo unesite šifru">
+            </div>
+            <?php echo $errors['password2'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Pohađam <strong class="text-danger">*</strong></label>
+            <select class="form-select" name="school">
+              <option value="1" selected>Osnovnu školu</option>
+              <option value="2">Srednju školu</option>
+              <option value="3">Fakultet</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Zemlja <strong class="text-danger">*</strong></label>
+            <select class="form-select" name="country">
+              <option value="srbija" selected>Srbija</option>
+              <option value="cg">Crna Gora</option>
+              <option value="other">Preostale zemlje</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Broj telefona (opciono)</label>
+            <input name="phone_number" type="tel" pattern="[0-9-+]*" class="form-control" placeholder="Unesite broj telefona" value="<?php echo $phone_number ?? ""; ?>">
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" name="slazem_se" class="form-check-input" id="exampleCheck1" <?php if (isset($slazemSe) && $slazemSe !== 0) echo 'checked'; ?>>
+            <label class="form-check-label" for="exampleCheck1">Slažem se sa <a target="_blank" href="<?php echo BASE_URL; ?>uslovi-koriscenja">uslovima korišćenja</a> i <a target="_blank" href="<?php echo BASE_URL; ?>politika-privatnosti">politikom privatnosti</a></label>
+            <?php echo $errors['slazem_se'] ?? ""; ?>
+          </div>
+
+          <div class="mb-4 form-check detemozecheck">
+            <input type="checkbox" name="slazem_se2" class="form-check-input" id="exampleCheck2" <?php if (isset($slazemSe2) && $slazemSe2 !== 0) echo 'checked'; ?>>
+            <label class="form-check-label" for="exampleCheck2">Saglasan sam da moje dete može da koristi platformu Tatamata za učenje</label>
+            <?php echo $errors['slazem_se2'] ?? ""; ?>
+          </div>
+
+          <div class="d-grid mt-2">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-user-plus me-2"></i> Kreiraj nalog
+            </button>
+          </div>
+
+          <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
+          <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
+
+          <div class="line-container d-flex justify-content-between">
+            <div class="line"></div>
+            <div class="ili mx-1">ili</div>
+            <div class="line"></div>
+          </div>
+
+          <div class="not-registered-container d-flex justify-content-between align-items-center">
+            <p class="mb-0 d-inline-block niste-reg">Već imaš nalog?</p>
+            <a href="<?php echo BASE_URL . 'prijava'; ?>">
+              <button type="button" class="btn btn-outline-secondary">
+                <i class="fas fa-sign-in-alt me-1"></i> Prijavi se
+              </button>
+            </a>
+          </div>
+
+        </form>
       </div>
-    </div>
 
-    <!-- Desni panel (forma) -->
-    <div class="col-lg-7 auth-panel-desno">
-      <div style="max-width:520px; width:100%;">
-
-        <ul id="progressbar" class="text-center p-0">
-          <li class="active register-progress-item" id="account"><strong>Licni podaci</strong></li>
-          <li class="register-progress-item" id="personal"><strong>Email i sifra</strong></li>
-          <li class="register-progress-item" id="confirm"><strong>Potvrda</strong></li>
-        </ul>
-
-        <div class="login-form-container">
-
-          <h1 class="mb-1"><i class="fas fa-user-plus me-2" style="color:var(--plava);"></i> Kreiraj nalog</h1>
-          <p class="auth-subtitle">Napravi nalog i pocni da ucis matematiku.</p>
-
-          <?php echo $errors['taken_email'] ?? ""; ?>
-
-          <form id="register-form" method="POST">
-
-            <div id="ime-prezime">
-
-              <div class="mb-4">
-                <label class="form-label">Ime <strong class="text-danger">*</strong></label>
-                <input name="firstname" type="text" class="form-control <?php if (isset($errors['firstname'])) echo 'is-invalid';
-                                                                        else if (isset($firstname)) echo 'is-valid'; ?>" placeholder="Unesite ime" value="<?php echo $firstname ?? ""; ?>">
-                <?php echo $errors['firstname'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifime">Molimo unesite ime.</div>
-                <div class="mb-0 invalid-feedback ifime2">Dozvoljeno je koristiti samo slova.</div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Prezime <strong class="text-danger">*</strong></label>
-                <input name="lastname" type="text" class="form-control <?php if (isset($errors['lastname'])) echo 'is-invalid';
-                                                                        else if (isset($lastname)) echo 'is-valid'; ?>" placeholder="Unesite prezime" value="<?php echo $lastname ?? ""; ?>">
-                <?php echo $errors['lastname'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifprezime">Molimo unesite prezime.</div>
-                <div class="mb-0 invalid-feedback ifprezime2">Dozvoljeno je koristiti samo slova.</div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Pohađam <strong class="text-danger">*</strong></label>
-                <select class="form-select" name="school" aria-label="Default select example">
-                  <option value="1" selected>Osnovnu školu</option>
-                  <option value="2">Srednju školu</option>
-                  <option value="3">Fakultet</option>
-                </select>
-              </div>
-
-            </div>
-
-            <div id="email-sifra">
-
-              <div class="mb-4">
-                <label class="form-label">Email <strong class="text-danger">*</strong></label>
-                <input name="email" type="email" class="form-control <?php if (isset($errors['email']) || isset($errors['taken_email'])) echo 'is-invalid';
-                                                                      else if (isset($email)) echo 'is-valid'; ?>" placeholder="Unesite email" value="<?php echo $email ?? ""; ?>">
-                <?php echo $errors['email'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifemail">Pogrešan email format.</div>
-                <div class="mb-0 invalid-feedback ifemail2">Email je zauzet.</div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Šifra <strong class="text-danger">*</strong></label>
-                <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
-                <?php echo $errors['password'] ?? ""; ?>
-                <?php echo $errors['password_confirm'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifpassword">Molimo Vas unesite šifru.</div>
-                <div class="mb-0 invalid-feedback ifpassword2">Šifre se ne poklapaju.</div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Potvrda šifre <strong class="text-danger">*</strong></label>
-                <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Ponovo unesite šifru">
-                <?php echo $errors['password2'] ?? ""; ?>
-              </div>
-
-            </div>
-
-            <div id="zemlja-razred-telefon">
-
-              <div class="mb-4">
-                <label class="form-label">Zemlja <strong class="text-danger">*</strong></label>
-                <select class="form-select" name="country" aria-label="Default select example">
-                  <option value="srbija" selected>Srbija</option>
-                  <option value="cg">Crna Gora</option>
-                  <option value="other">Preostale zemlje</option>
-                </select>
-              </div>
-
-              <!-- <div id="grade-div" class="mb-4">
-                <label class="form-label">Koji si razred? <strong class="text-danger">*</strong></label>
-                <select class="form-select" name="grade" aria-label="Default select example">
-                  <option value="Osmi" selected>Osmi</option>
-                  <option value="Sedmi">Sedmi</option>
-                  <option value="Sesti">Šesti</option>
-                  <option value="Peti">Peti</option>
-                  <option value="Nizi">Niži razredi osnovne škole</option>
-                  <option value="Srednja skola">Srednja škola</option>
-                </select>
-              </div> -->
-
-              <div id="number-div" style="margin-bottom: 2rem;">
-                <label class="form-label">Broj telefona (opciono)</label>
-                <input name="phone_number" type="tel" , pattern="[0-9-+]*" class="form-control" placeholder="Unesite broj telefona" value="<?php echo $phone_number ?? ""; ?>">
-                <?php echo $errors['phone_number'] ?? ""; ?>
-              </div>
-
-              <div class="mb-3 form-check">
-                <input type="checkbox" name="slazem_se" class="form-check-input" id="exampleCheck1" <?php if (isset($slazemSe) && $slazemSe !== 0) echo 'checked'; ?>>
-                <label class="form-check-label" for="exampleCheck1">Slažem se sa <a target="_blank" href="<?php echo BASE_URL; ?>uslovi-koriscenja">uslovima korisćenja</a> i <a target="_blank" href="<?php echo BASE_URL; ?>politika-privatnosti">politikom privatnosti</a></label>
-                <?php echo $errors['slazem_se'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifslazemse">Nisi prihvatio uslove korišćenja.</div>
-              </div>
-
-              <div class="mb-3 form-check detemozecheck">
-                <input type="checkbox" name="slazem_se2" class="form-check-input" id="exampleCheck2" <?php if (isset($slazemSe2) && $slazemSe2 !== 0) echo 'checked'; ?>>
-                <label class="form-check-label" for="exampleCheck2">Saglasan sam da moje dete može da koristi platformu Tatamata za učenje</label>
-                <?php echo $errors['slazem_se2'] ?? ""; ?>
-                <div class="mb-0 invalid-feedback ifslazemse2">Nisi prihvatio uslove korišćenja.</div>
-              </div>
-
-            </div>
-
-            <div class="text-center">
-              <button id="prevB" type="button" class="register-btn btn btn-primary scale-btn-2 rr me-1"><i class="fas fa-arrow-left"></i> Nazad</button>
-              <button id="nextB" type="button" name="register" class="register-btn btn btn-primary scale-btn-2 rr ms-1">Dalje <i class="fas fa-arrow-right"></i></button>
-            </div>
-
-            <input type="hidden" name="redirect" value="<?php echo BASE_URL . $redirectTo; ?>">
-            <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
-
-            <div class="line-container d-flex justify-content-between">
-              <div class="line"></div>
-              <div class="ili mx-1">ili</div>
-              <div class="line"></div>
-            </div>
-
-            <div class="not-registered-container d-flex justify-content-between align-items-center">
-              <p class="mb-0 d-inline-block niste-reg">Već imaš nalog?</p>
-              <a href="<?php echo BASE_URL . 'prijava'; ?>">
-                <button type="button" class="btn btn-outline-secondary">
-                  <i class="fas fa-sign-in-alt me-1"></i> Prijavi se
-                </button>
-              </a>
-            </div>
-
-          </form>
-        </div>
-
-        <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-700);">
-          <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
-          <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
-        </div>
-
-        <div class="mt-4 text-center go-back">
-          <a href="<?php echo BASE_URL . $redirectTo; ?>">
-            <i class="fas fa-arrow-left"></i> Odustani
-          </a>
-        </div>
-
+      <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-700);">
+        <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
+        <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
       </div>
-    </div>
 
+      <div class="mt-4 text-center go-back">
+        <a href="<?php echo BASE_URL . $redirectTo; ?>">
+          <i class="fas fa-arrow-left"></i> Odustani
+        </a>
+      </div>
+
+    </div>
   </div>
+
 </section>
 <!-- -------- REGISTRACIJA ---------- -->
 

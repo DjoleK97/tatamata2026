@@ -95,76 +95,67 @@ $validator = $_GET['validator'];
 
 <!-- -------- NOVA SIFRA ---------- -->
 <section id="prijave" class="login-form">
-  <div class="row g-0" style="min-height:100vh;">
 
-    <!-- Levi panel (branding) -->
-    <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
-      <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
-      <i class="fas fa-lock mb-4" style="font-size:3rem; color:var(--zuta); opacity:.6; position:relative; z-index:1;"></i>
-      <h2>Kreiraj novu<br><span class="highlight">lozinku</span></h2>
-    </div>
+  <div class="auth-panel-desno">
+    <div style="max-width:460px; width:100%;">
 
-    <!-- Desni panel (forma) -->
-    <div class="col-lg-7 auth-panel-desno">
-      <div style="max-width:460px; width:100%;">
+      <?php echo $errors['taken_email'] ?? "";
 
-        <?php echo $errors['taken_email'] ?? "";
+      if (empty($selector) || empty($validator)) {
+      } else {
+        if (ctype_xdigit($selector) !== false && ctype_xdigit($validator) !== false) { ?>
 
-        if (empty($selector) || empty($validator)) {
-        } else {
-          if (ctype_xdigit($selector) !== false && ctype_xdigit($validator) !== false) { ?>
+          <div class="login-form-container">
 
-            <div class="login-form-container">
+            <h1 class="mb-2"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Nova sifra</h1>
+            <p class="auth-subtitle">Kreirajte novu sifru za prijavu na vas nalog.</p>
 
-              <h1 class="mb-2"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Nova sifra</h1>
-              <p class="auth-subtitle">Kreirajte novu sifru za prijavu na vas nalog.</p>
-
-              <form method="POST" class="mb-3">
+            <form method="POST" class="mb-3">
               <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
-                <div class="mb-4">
-                  <label class="form-label">Sifra <strong class="text-danger">*</strong></label>
-                  <div class="input-ikona">
-                    <i class="fas fa-lock"></i>
-                    <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
-                  </div>
-                  <?php echo $errors['password'] ?? ""; ?>
-                  <?php echo $errors['password_confirm'] ?? ""; ?>
+              <div class="mb-4">
+                <label class="form-label">Sifra <strong class="text-danger">*</strong></label>
+                <div class="input-ikona">
+                  <i class="fas fa-lock"></i>
+                  <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
                 </div>
+                <?php echo $errors['password'] ?? ""; ?>
+                <?php echo $errors['password_confirm'] ?? ""; ?>
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label">Ponovite sifru <strong class="text-danger">*</strong></label>
-                  <div class="input-ikona">
-                    <i class="fas fa-lock"></i>
-                    <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite sifru">
-                  </div>
-                  <?php echo $errors['password2'] ?? ""; ?>
+              <div class="mb-4">
+                <label class="form-label">Ponovite sifru <strong class="text-danger">*</strong></label>
+                <div class="input-ikona">
+                  <i class="fas fa-lock"></i>
+                  <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite sifru">
                 </div>
+                <?php echo $errors['password2'] ?? ""; ?>
+              </div>
 
-                <input type="hidden" name="selector" value="<?php echo $selector; ?>">
-                <input type="hidden" name="validator" value="<?php echo $validator; ?>">
+              <input type="hidden" name="selector" value="<?php echo $selector; ?>">
+              <input type="hidden" name="validator" value="<?php echo $validator; ?>">
 
-                <button name="reset-password" type="submit" class="confirm-btn btn btn-primary d-block w-100">
-                  <i class="fas fa-check me-2"></i> Potvrdi novu sifru
-                </button>
+              <button name="reset-password" type="submit" class="btn btn-primary d-block w-100">
+                <i class="fas fa-check me-2"></i> Potvrdi novu sifru
+              </button>
 
-              </form>
-            </div>
+            </form>
+          </div>
 
-            <div class="mt-4 text-center go-back">
-              <a href="<?php echo BASE_URL; ?>pocetna">
-                <i class="fas fa-arrow-left"></i> Odustani
-              </a>
-            </div>
-        <?php
-          }
+          <div class="mt-4 text-center go-back">
+            <a href="<?php echo BASE_URL; ?>pocetna">
+              <i class="fas fa-arrow-left"></i> Odustani
+            </a>
+          </div>
+
+      <?php
         }
-        ?>
+      }
+      ?>
 
-      </div>
     </div>
-
   </div>
+
 </section>
 
 <?php include 'includes/footer.php'; ?>

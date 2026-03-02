@@ -289,28 +289,8 @@ if (isset($_POST['login'])) {
 <!-- -------- PRIJAVA ---------- -->
 <section id="prijave" class="login-form">
 
-  <!-- Levi panel - brending -->
-  <div class="col-lg-5 d-none d-lg-flex auth-panel-levo">
-    <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="auth-logo">
-    <h2>Matematika moze<br><span class="highlight">da bude laka</span></h2>
-    <div class="auth-stats">
-      <div class="auth-stat">
-        <span class="auth-stat-num"><?php echo getAge('2015-09-15'); ?>+</span>
-        <span class="auth-stat-lbl">god. iskustva</span>
-      </div>
-      <div class="auth-stat">
-        <span class="auth-stat-num">90+</span>
-        <span class="auth-stat-lbl">ucenika</span>
-      </div>
-      <div class="auth-stat">
-        <span class="auth-stat-num">87%</span>
-        <span class="auth-stat-lbl">uspesnost</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Desni panel - forma -->
   <div class="auth-panel-desno">
+    <div style="max-width:460px; width:100%;">
 
       <?php printFormatedFlashMessage("reset_password_success_message"); ?>
       <?php printFormatedFlashMessage("logout_success_message"); ?>
@@ -321,7 +301,7 @@ if (isset($_POST['login'])) {
         <p class="auth-subtitle">Dobrodosao nazad. Prijavi se da nastavis sa ucenjem.</p>
         <form id="login-form" method="POST">
           <div class="mb-4">
-            <label class="form-label"><i class="far fa-envelope"></i> Email</label>
+            <label class="form-label">Email <strong class="text-danger">*</strong></label>
             <div class="input-ikona">
               <i class="far fa-envelope"></i>
               <input id="email" name="email" type="email" class="form-control <?php if (isset($errors['email'])) echo 'is-invalid';
@@ -330,7 +310,7 @@ if (isset($_POST['login'])) {
             <?php echo $errors['email'] ?? ""; ?>
           </div>
           <div class="mb-3">
-            <label class="form-label"><i class="fas fa-lock"></i> Sifra</label>
+            <label class="form-label">Sifra <strong class="text-danger">*</strong></label>
             <div class="input-ikona">
               <i class="fas fa-lock"></i>
               <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
@@ -379,6 +359,7 @@ if (isset($_POST['login'])) {
         </a>
       </div>
 
+    </div>
   </div>
 </section>
 <!-- -------- PRIJAVA ---------- -->

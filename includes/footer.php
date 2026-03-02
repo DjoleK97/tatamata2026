@@ -1,6 +1,4 @@
 
-</div>
-
 <footer id="footer">
   <div class="container">
     <div class="row g-4">
