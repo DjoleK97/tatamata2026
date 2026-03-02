@@ -49,7 +49,7 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
   <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <!-- CUSTOM CSS -->
-  <link rel="stylesheet" href="<?php echo BASE_URL . "public/css/styles.css" ?>">
+  <link rel="stylesheet" href="<?php echo BASE_URL . "public/css/styles.css?v=" . ASSET_VERSION ?>">
   <!-- FONT AWESOME -->
   <script src="https://kit.fontawesome.com/5c5689b7a2.js"></script>
   <!-- PLAYER -->
@@ -86,9 +86,9 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
         <div class="navbar-container-custom fixed-navbar-bg">
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid navbar-container">
-              <a class="navbar-brand" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt="TataMata"></a>
+              <a class="navbar-brand" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg?v=' . ASSET_VERSION ?>" alt="TataMata"></a>
               <div class="mobile-nav-container d-flex justify-content-between">
-                <a class="brand-mobile" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg' ?>" alt="TataMata"></a>
+                <a class="brand-mobile" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg?v=' . ASSET_VERSION ?>" alt="TataMata"></a>
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
