@@ -63,10 +63,10 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
 
         <div id="moji-kursevi-blocked" class="col animiraj">
           <h2><i class="fas fa-ban me-2"></i> Tvoj nalog je blokiran</h2>
-          <p>&bull; Primetili smo da je na ovom nalogu prekrsen dozvoljen broj uredjaja sa kojim se moze pristupiti profilu.</p>
-          <p>&bull; Svakom korisniku je dozvoljen pristup sa <strong>najvise 2 uredjaja</strong></p>
-          <p>&bull; <strong>Uprkos prethodnom upozorenju koje ste dobili, nastavili ste da delite Vas nalog sa drugim osobama, sto je <span style='color: red;'>strogo zabranjeno</span> i krsi uslove koriscenja sajta tatamata.rs</strong></p>
-          <p>&bull; Iz tog razloga je onemogucen pristup kursevima koje ste kupili.</p>
+          <p>&bull; Primetili smo da je na ovom nalogu prekoračen dozvoljen broj uređaja sa kojih se može pristupiti profilu.</p>
+          <p>&bull; Svakom korisniku je dozvoljen pristup sa <strong>najviše 2 uređaja</strong></p>
+          <p>&bull; <strong>Uprkos prethodnom upozorenju koje ste dobili, nastavili ste da delite Vaš nalog sa drugim osobama, što je <span style='color: red;'>strogo zabranjeno</span> i krši uslove korišćenja sajta tatamata.rs</strong></p>
+          <p>&bull; Iz tog razloga je onemogućen pristup kursevima koje ste kupili.</p>
           <p>&bull; Za sva pitanja i informacije javite se putem <a href="<?php echo BASE_URL ?>pocetna#kontakt" class="text-decoration-none kontakt-forme-link" target="_blank">kontakt forme</a>.</p>
         </div>
 
@@ -76,8 +76,8 @@ $courses = Database::getInstance()->getAllCoursesForUser($_SESSION['user']->id);
           <div class="col-lg-6 offset-lg-3 text-center animiraj">
             <div class="prazno-stanje">
               <i class="fas fa-book-open prazno-ikona"></i>
-              <h3>Nemas nijedan kurs</h3>
-              <p>Pogledaj ponudu kurseva i pocni sa ucenjem.</p>
+              <h3>Nemaš nijedan kurs</h3>
+              <p>Pogledaj ponudu kurseva i počni sa učenjem.</p>
               <a href="<?php echo BASE_URL; ?>kursevi" class="btn btn-primary">
                 <i class="fas fa-graduation-cap me-2"></i> Pogledaj kurseve
               </a>

@@ -34,13 +34,13 @@ include_once 'includes/header.php';
     </div>
 
     <h1 class="hero-title">
-      Matematika moze<br>
+      Matematika može<br>
       <span class="highlight">da bude laka</span>
     </h1>
 
     <p class="hero-subtitle">
-      Video kursevi objasnjeni korak po korak, dostupni 24/7.
-      Ucis sopstvenim tempom, a razumes sve.
+      Video kursevi objašnjeni korak po korak, dostupni 24/7.
+      Učiš sopstvenim tempom i razumeš gradivo.
     </p>
 
     <!-- CTA dugmad -->
@@ -61,11 +61,11 @@ include_once 'includes/header.php';
       </div>
       <div class="animiraj">
         <span class="hero-stat-num">90+</span>
-        <div class="hero-stat-lbl">zadovoljnih ucenika</div>
+        <div class="hero-stat-lbl">zadovoljnih učenika</div>
       </div>
       <div class="animiraj">
         <span class="hero-stat-num">87%</span>
-        <div class="hero-stat-lbl">osmaka upisalo zeljenu skolu</div>
+        <div class="hero-stat-lbl">osmaka upisalo željenu školu</div>
       </div>
       <div class="animiraj">
         <span class="hero-stat-num">24/7</span>
@@ -77,7 +77,7 @@ include_once 'includes/header.php';
     <div class="hero-trust">
       <span><i class="fas fa-shield-alt"></i> Sigurna platforma</span>
       <span><i class="fas fa-clock"></i> Pristup godinu dana</span>
-      <span><i class="fas fa-redo"></i> Gledaj neograniceno</span>
+      <span><i class="fas fa-redo"></i> Gledaj neograničeno</span>
     </div>
 
   </div>
@@ -173,7 +173,7 @@ include_once 'includes/header.php';
           <div class="brendu-ikona"><i class="fas fa-heart"></i></div>
           <div>
             <h4>Volim da pomognem</h4>
-            <p>Verujem da matematiku moze svako da nauci, ako se stvari objasne na pravi nacin. Moj pristup je zasnovan na razumevanju, ne na bubanju formula.</p>
+            <p>Verujem da matematiku može naučiti svako, ako se stvari objasne na pravi način. Moj pristup je zasnovan na razumevanju, ne na mehaničkom bubanju formula.</p>
           </div>
         </div>
 
@@ -181,7 +181,7 @@ include_once 'includes/header.php';
           <div class="brendu-ikona"><i class="fas fa-lightbulb"></i></div>
           <div>
             <h4>Kvalitet na prvom mestu</h4>
-            <p>Svaki kurs je pazljivo osmisljen i detaljno snimljen. Cilj mi je da svaku lekciju naucis sa razumevanjem, a ne da samo prodjes.</p>
+            <p>Svaki kurs je pažljivo osmišljen i detaljno snimljen. Cilj mi je da svaku lekciju naučiš sa razumevanjem, a ne da samo prođeš.</p>
           </div>
         </div>
 
@@ -189,7 +189,7 @@ include_once 'includes/header.php';
           <div class="brendu-ikona"><i class="fas fa-bullseye"></i></div>
           <div>
             <h4>Tvoj uspeh je moj cilj</h4>
-            <p>Moj san je da omogucim ucenicima sa nasih prostora da imaju kvalitetnu nastavu koja ce im doneti dugotrajno znanje i odlicne rezultate.</p>
+            <p>Moj san je da omogućim učenicima sa naših prostora da imaju kvalitetnu nastavu koja će im doneti dugotrajno znanje i odlične rezultate.</p>
           </div>
         </div>
       </div>
@@ -201,8 +201,8 @@ include_once 'includes/header.php';
             <i class="fas fa-chalkboard-teacher"></i>
           </div>
           <h3>Djole — TataMata</h3>
-          <p class="profil-uloga">Osnivac TataMata platforme</p>
-          <p>Profesor matematike sa vise od <?php echo getAge('2015-09-15'); ?> godina iskustva u radu sa ucenicima</p>
+          <p class="profil-uloga">Osnivač TataMata platforme</p>
+          <p>Profesor matematike sa više od <?php echo getAge('2015-09-15'); ?> godina iskustva u radu sa učenicima</p>
           <div class="d-flex justify-content-center gap-3 mt-4" style="flex-wrap:wrap;">
             <a href="https://www.youtube.com/c/TataMATA/" target="_blank" rel="noopener" class="btn btn-primary px-4">
               <i class="fab fa-youtube me-2"></i>YouTube
@@ -230,10 +230,10 @@ include_once 'includes/header.php';
 
     <div class="text-center mb-2 animiraj">
       <span class="section-badge" style="background:rgba(255,224,102,.15);color:var(--zuta);">
-        <i class="fas fa-star me-1"></i> Nase usluge
+        <i class="fas fa-star me-1"></i> Naše usluge
       </span>
     </div>
-    <h1 class="animiraj">Sta sve nudimo?</h1>
+    <h1 class="animiraj">Šta sve nudimo?</h1>
 
     <div class="row g-4 justify-content-center animiraj-grupa">
 
@@ -272,16 +272,16 @@ include_once 'includes/header.php';
       <div class="col-md-4 col-sm-6 animiraj">
         <a href="<?php echo BASE_URL; ?>individualni-casovi" class="usluga-karta">
           <i class="fas fa-user-graduate"></i>
-          <p class="usluga-naziv">Individualni casovi</p>
-          <p class="usluga-opis">Casovi prilagodjeni tvom tempu i potrebama</p>
+          <p class="usluga-naziv">Individualni časovi</p>
+          <p class="usluga-opis">Časovi prilagođeni tvom tempu i potrebama</p>
         </a>
       </div>
 
       <div class="col-md-4 col-sm-6 animiraj">
         <a href="<?php echo BASE_URL; ?>grupni-casovi" class="usluga-karta">
           <i class="fas fa-users"></i>
-          <p class="usluga-naziv">Grupni casovi</p>
-          <p class="usluga-opis">Ucite zajedno uz vodstvo iskusnog profesora</p>
+          <p class="usluga-naziv">Grupni časovi</p>
+          <p class="usluga-opis">Učite zajedno uz vodstvo iskusnog profesora</p>
         </a>
       </div>
 
@@ -299,7 +299,7 @@ include_once 'includes/header.php';
     <div class="text-center mb-2 animiraj">
       <span class="section-badge"><i class="fas fa-star me-1"></i> Recenzije</span>
     </div>
-    <h1 class="animiraj">Sta kazu ucenici i roditelji</h1>
+    <h1 class="animiraj">Šta kažu učenici i roditelji</h1>
 
     <div class="row">
       <div class="col-12">
@@ -308,8 +308,8 @@ include_once 'includes/header.php';
           <div class="preporuka-karta">
             <div class="preporuka-zvezdice"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
             <p class="preporuka-tekst">
-              Zahvaljujuci pripremama za prijemni prosle godine moje dete je upisalo zeljenu skolu (gimnaziju).
-              Svima toplo preporucujem, a mi nastavljamo saradnju i u srednjoj skoli.
+              Zahvaljujući pripremama za prijemni, prošle godine moje dete je upisalo željenu školu (gimnaziju).
+              Svima toplo preporučujem, a mi nastavljamo saradnju i u srednjoj školi.
             </p>
             <div class="preporuka-autor">
               <i class="fas fa-user-circle me-2" style="color:var(--plava); font-size:1.3rem;"></i>Jelena, Miloseva mama
@@ -332,7 +332,7 @@ include_once 'includes/header.php';
             <div class="preporuka-zvezdice"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
             <p class="preporuka-tekst">
               Veoma pametna i sposobna osoba, strpljiv i susretljiv. Od kad radi sa mojom cerkom,
-              matematika za nju vise nije toliko strasna i nerazumljiva. Svaka preporuka za dalju saradnju.
+              matematika za nju više nije toliko strašna i nerazumljiva. Svaka preporuka za dalju saradnju.
             </p>
             <div class="preporuka-autor">
               <i class="fas fa-user-circle me-2" style="color:#d97706; font-size:1.3rem;"></i>Jelena, Tarina mama
@@ -378,7 +378,7 @@ include_once 'includes/header.php';
     <div class="text-center mb-2 animiraj">
       <span class="section-badge"><i class="fas fa-question-circle me-1"></i> Pomoc</span>
     </div>
-    <h1 class="text-center fw-bold mb-4 animiraj">Cesto postavljana pitanja</h1>
+    <h1 class="text-center fw-bold mb-4 animiraj">Često postavljana pitanja</h1>
 
     <div class="row animiraj">
       <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
@@ -388,12 +388,12 @@ include_once 'includes/header.php';
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-q1">
-                Kako mogu da kupim zeljeni kurs?
+                Kako mogu da kupim željeni kurs?
                 <i class="fas fa-plus-circle ms-auto flex-shrink-0"></i>
               </button>
             </h2>
             <div id="faq-q1" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Odjes na stranicu "Kursevi", izaberes kurs i kliknes "Kupi kurs". Nakon toga popunis uplatnicu i uplatu vrsis u posti, banci ili putem internet bankarstva.</div>
+              <div class="accordion-body">Odeš na stranicu "Kursevi", izabereš kurs i klikneš "Kupi kurs". Nakon toga popuniš uplatnicu i uplatu vršiš u pošti, banci ili putem internet bankarstva.</div>
             </div>
           </div>
 
@@ -405,7 +405,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q2" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Cim uplata bude evidentirana, dobijes pristup kursu.</div>
+              <div class="accordion-body">Čim uplata bude evidentirana, dobiješ pristup kursu.</div>
             </div>
           </div>
 
@@ -417,7 +417,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q3" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Imas pristup godinu dana od datuma kupovine.</div>
+              <div class="accordion-body">Imaš pristup godinu dana od datuma kupovine.</div>
             </div>
           </div>
 
@@ -429,7 +429,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q4" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Naravno! Kursevi su prilagodjeni svim ucenicima, nezavisno od trenutnog nivoa znanja.</div>
+              <div class="accordion-body">Naravno! Kursevi su prilagođeni svim učenicima, bez obzira na trenutni nivo znanja.</div>
             </div>
           </div>
 
@@ -441,7 +441,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q5" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Mozes da pristupisas sajtu sa najvise 2 razlicita uredjaja (npr. laptop i telefon).</div>
+              <div class="accordion-body">Možeš da pristupiš sajtu sa najviše 2 različita uređaja (npr. laptop i telefon).</div>
             </div>
           </div>
 
@@ -453,7 +453,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q6" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Da, moguce je. Samo tokom gledanja klipova ukljuci rotaciju ekrana na telefonu.</div>
+              <div class="accordion-body">Da, moguće je. Samo tokom gledanja klipova uključi rotaciju ekrana na telefonu.</div>
             </div>
           </div>
 
@@ -465,7 +465,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q7" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Ako si nov na sajtu i nemas nalog — registruj se (samo jedanput). Svaki sledeci put — prijavi se.</div>
+              <div class="accordion-body">Ako si nov na sajtu i nemaš nalog — registruj se (samo jedanput). Svaki sledeći put — prijavi se.</div>
             </div>
           </div>
 
@@ -477,7 +477,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q8" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Ne. Svaki nalog je namenjen iskljucivo jednoj osobi. Deljenje naloga rezultuje trajnim blokiranjem pristupa kursevima.</div>
+              <div class="accordion-body">Ne. Svaki nalog je namenjen isključivo jednoj osobi. Deljenje naloga rezultuje trajnim blokiranjem pristupa kursevima.</div>
             </div>
           </div>
 
@@ -489,7 +489,7 @@ include_once 'includes/header.php';
               </button>
             </h2>
             <div id="faq-q9" class="accordion-collapse collapse" data-bs-parent="#accordion-faq">
-              <div class="accordion-body">Na stranici "Prijavi se" klikni "Zaboravili ste sifru?". Unesi email i klikni "Potvrdi". Stici ce ti mejl sa linkom za promenu sifre.</div>
+              <div class="accordion-body">Na stranici "Prijavi se" klikni "Zaboravili ste šifru?". Unesite email i kliknite "Potvrdi". Stići će vam mejl sa linkom za promenu šifre.</div>
             </div>
           </div>
 
@@ -497,7 +497,7 @@ include_once 'includes/header.php';
 
         <!-- CTA ispod FAQ-a -->
         <div class="faq-cta text-center">
-          <p>Nisi pronasao odgovor?</p>
+          <p>Nisi pronašao/la odgovor?</p>
           <a href="#kontakt" class="btn-outline-plava btn">Posalji nam poruku <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
 

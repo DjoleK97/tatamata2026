@@ -298,7 +298,7 @@ if (isset($_POST['login'])) {
 
       <div class="login-form-container">
         <h1><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Prijava</h1>
-        <p class="auth-subtitle">Dobrodosao nazad. Prijavi se da nastavis sa ucenjem.</p>
+        <p class="auth-subtitle">Dobrodošao nazad! Prijavi se i nastavi sa učenjem.</p>
         <form id="login-form" method="POST">
           <div class="mb-4">
             <label class="form-label">Email <strong class="text-danger">*</strong></label>
@@ -310,14 +310,14 @@ if (isset($_POST['login'])) {
             <?php echo $errors['email'] ?? ""; ?>
           </div>
           <div class="mb-3">
-            <label class="form-label">Sifra <strong class="text-danger">*</strong></label>
+            <label class="form-label">Šifra <strong class="text-danger">*</strong></label>
             <div class="input-ikona">
               <i class="fas fa-lock"></i>
-              <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
+              <input id="password" name="password" type="password" class="form-control <?php if (isset($errors['password'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
             </div>
             <?php echo $errors['password'] ?? ""; ?>
             <div class="text-end mt-2">
-              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru text-decoration-none">Zaboravili ste sifru?</a>
+              <a href="<?php echo BASE_URL . "zaboravljena-lozinka"; ?>" class="zab-sifru text-decoration-none">Zaboravili ste šifru?</a>
             </div>
           </div>
 
@@ -334,7 +334,7 @@ if (isset($_POST['login'])) {
           </div>
 
           <div class="not-registered-container d-flex justify-content-between align-items-center">
-            <p class="mb-0 d-inline-block niste-reg">Nemas nalog?</p>
+            <p class="mb-0 d-inline-block niste-reg">Nemaš nalog?</p>
             <a href="<?php echo BASE_URL . 'registracija'; ?>">
               <button type="button" role="button" class="btn btn-outline-secondary">
                 <i class="fas fa-user-plus me-1"></i> Kreiraj nalog
@@ -350,7 +350,7 @@ if (isset($_POST['login'])) {
 
       <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-500);">
         <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
-        <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
+        <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
       </div>
 
       <div class="mt-4 text-center go-back">

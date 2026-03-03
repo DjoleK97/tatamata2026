@@ -90,8 +90,8 @@ if (isset($_POST['reset-password'])) {
       <?php printFormatedFlashMessage("not_taken_email"); ?>
 
       <div class="login-form-container">
-        <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravljena sifra?</h1>
-        <p class="auth-subtitle">Poslacemo ti email sa uputstvom za promenu sifre.</p>
+        <h1 class="mb-2"><i class="fas fa-key me-2" style="color:var(--plava);"></i> Zaboravljena šifra?</h1>
+        <p class="auth-subtitle">Poslićemo ti email sa uputstvom za promenu šifre.</p>
 
         <?php echo $errors['not_taken_email'] ?? ""; ?>
 
@@ -109,7 +109,7 @@ if (isset($_POST['reset-password'])) {
           </div>
 
           <button name="reset-password" type="submit" class="btn btn-primary d-block w-100">
-            <i class="fas fa-paper-plane me-2"></i> Posalji uputstvo
+            <i class="fas fa-paper-plane me-2"></i> Pošalji uputstvo
           </button>
 
         </form>

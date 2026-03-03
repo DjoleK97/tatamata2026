@@ -107,27 +107,27 @@ $validator = $_GET['validator'];
 
           <div class="login-form-container">
 
-            <h1 class="mb-2"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Nova sifra</h1>
-            <p class="auth-subtitle">Kreirajte novu sifru za prijavu na vas nalog.</p>
+            <h1 class="mb-2"><i class="fas fa-lock me-2" style="color:var(--plava);"></i> Nova šifra</h1>
+            <p class="auth-subtitle">Kreirajte novu šifru za prijavu na vaš nalog.</p>
 
             <form method="POST" class="mb-3">
               <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
               <div class="mb-4">
-                <label class="form-label">Sifra <strong class="text-danger">*</strong></label>
+                <label class="form-label">Šifra <strong class="text-danger">*</strong></label>
                 <div class="input-ikona">
                   <i class="fas fa-lock"></i>
-                  <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite sifru">
+                  <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite šifru">
                 </div>
                 <?php echo $errors['password'] ?? ""; ?>
                 <?php echo $errors['password_confirm'] ?? ""; ?>
               </div>
 
               <div class="mb-4">
-                <label class="form-label">Ponovite sifru <strong class="text-danger">*</strong></label>
+                <label class="form-label">Ponovite šifru <strong class="text-danger">*</strong></label>
                 <div class="input-ikona">
                   <i class="fas fa-lock"></i>
-                  <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite sifru">
+                  <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite šifru">
                 </div>
                 <?php echo $errors['password2'] ?? ""; ?>
               </div>
@@ -136,7 +136,7 @@ $validator = $_GET['validator'];
               <input type="hidden" name="validator" value="<?php echo $validator; ?>">
 
               <button name="reset-password" type="submit" class="btn btn-primary d-block w-100">
-                <i class="fas fa-check me-2"></i> Potvrdi novu sifru
+                <i class="fas fa-check me-2"></i> Potvrdi novu šifru
               </button>
 
             </form>

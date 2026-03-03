@@ -112,9 +112,9 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
       <?php printFormatedFlashMessage("change_password_success_message"); ?>
       <?php printFormatedFlashMessage("change_profile_success_message"); ?>
 
-      <!-- Licni podaci -->
+      <!-- Lični podaci -->
       <div class="profile-div mb-4">
-        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-user me-2" style="color:var(--plava);"></i> Licni podaci</h3>
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-user me-2" style="color:var(--plava);"></i> Lični podaci</h3>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><span class="profile-span">Ime: </span><?php echo htmlspecialchars($_SESSION['user']->firstname); ?></li>
           <li class="list-group-item"><span class="profile-span">Prezime: </span><?php echo htmlspecialchars($_SESSION['user']->lastname); ?></li>
@@ -132,10 +132,10 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
             <?php foreach ($schoolTypes as $schoolType) : ?>
               <option value="<?php echo $schoolType['school_type_id'] ?? "1"; ?>" <?php if ($schoolType['school_type_id'] == $_SESSION['user']->school_type_id) echo 'selected'; ?>><?php echo $schoolType['school_type_name'] ?? "Error"; ?></option>
             <?php endforeach; ?>
-            <option value="NULL" <?php if ($_SESSION['user']->school_type_id == "NULL") echo 'selected'; ?>>Ne zelim da se izjasnim</option>
+            <option value="NULL" <?php if ($_SESSION['user']->school_type_id == "NULL") echo 'selected'; ?>>Ne želim da se izjasnim</option>
           </select>
           <button name='update-profile' class="btn btn-primary" type="submit">
-            Sacuvaj izmenu
+            Sačuvaj izmenu
           </button>
         </form>
       </div>
@@ -145,7 +145,7 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
         <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:20px;"><i class="fas fa-shield-alt me-2" style="color:var(--plava);"></i> Bezbednost</h3>
         <p class="mb-3">
           <button class="btn btn-outline-plava" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            <i class="fas fa-key me-1"></i> Promeni sifru
+            <i class="fas fa-key me-1"></i> Promeni šifru
           </button>
         </p>
         <div class="collapse <?php if ($displayCollapse) {
@@ -156,21 +156,21 @@ $schoolTypes = Database::getInstance()->getAllSchoolTypes();
             <?php echo csrf_field(); // SEC-FIX: CSRF zaštita ?>
 
             <div class="mb-3">
-              <label class="form-label">Stara sifra <strong class="text-danger">*</strong></label>
-              <input name="old_password" type="password" class="form-control <?php if (isset($errors['old_password'])) echo 'is-invalid'; ?>" placeholder="Unesite staru sifru">
+              <label class="form-label">Stara šifra <strong class="text-danger">*</strong></label>
+              <input name="old_password" type="password" class="form-control <?php if (isset($errors['old_password'])) echo 'is-invalid'; ?>" placeholder="Unesite staru šifru">
               <?php echo $errors['old_password'] ?? ""; ?>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Nova sifra <strong class="text-danger">*</strong></label>
-              <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite novu sifru">
+              <label class="form-label">Nova šifra <strong class="text-danger">*</strong></label>
+              <input name="password" type="password" class="form-control <?php if (isset($errors['password']) || isset($errors['password_confirm'])) echo 'is-invalid'; ?>" placeholder="Unesite novu šifru">
               <?php echo $errors['password'] ?? ""; ?>
               <?php echo $errors['password_confirm'] ?? ""; ?>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Potvrda nove sifre <strong class="text-danger">*</strong></label>
-              <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite novu sifru">
+              <label class="form-label">Potvrda nove šifre <strong class="text-danger">*</strong></label>
+              <input name="password2" type="password" class="form-control <?php if (isset($errors['password2'])) echo 'is-invalid'; ?>" placeholder="Potvrdite novu šifru">
               <?php echo $errors['password2'] ?? ""; ?>
             </div>
 

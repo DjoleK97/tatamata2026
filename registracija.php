@@ -264,7 +264,7 @@ if (isset($_POST['password'])) {
 
       <div class="mt-3 text-center" style="font-size:.82rem; color:var(--siva-700);">
         <i class="fas fa-info-circle me-1" style="color:#f59e0b;"></i>
-        <em>Jedan nalog koristi samo jedna osoba sa najvise 2 uredjaja.</em>
+        <em>Jedan nalog koristi samo jedna osoba sa najviše 2 uređaja.</em>
       </div>
 
       <div class="mt-4 text-center go-back">

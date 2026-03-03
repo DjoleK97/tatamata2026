@@ -56,7 +56,7 @@ $total2 = 0;
           <div class="prazno-stanje text-center">
             <i class="fas fa-receipt prazno-ikona"></i>
             <h3>Nema transakcija</h3>
-            <p>Kupljeni kursevi ce se pojaviti ovde.</p>
+            <p>Kupljeni kursevi će se pojaviti ovde.</p>
           </div>
         <?php } else { ?>
 
@@ -80,9 +80,9 @@ $total2 = 0;
                     <td><?php echo $order['date']; ?></td>
                     <td>
                       <?php if ($order['confirmed']) { ?>
-                        <span class="bedz-dostupno"><i class="fas fa-check me-1"></i> Potvrdjeno</span>
+                        <span class="bedz-dostupno"><i class="fas fa-check me-1"></i> Potvrđeno</span>
                       <?php } else { ?>
-                        <span class="bedz-uskoro"><i class="fas fa-hourglass-half me-1"></i> Ceka potvrdu</span>
+                        <span class="bedz-uskoro"><i class="fas fa-hourglass-half me-1"></i> Čeka potvrdu</span>
                       <?php } ?>
                     </td>
                     <?php if ($_SESSION['user']->country == "srbija") { ?>

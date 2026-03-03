@@ -87,7 +87,7 @@ $currentPage = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], 
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid navbar-container">
               <a class="navbar-brand" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg?v=' . ASSET_VERSION ?>" alt="TataMata"></a>
-              <div class="mobile-nav-container d-flex justify-content-between">
+              <div class="mobile-nav-container justify-content-between">
                 <a class="brand-mobile" href="<?php echo BASE_URL . "pocetna"; ?>"><img src="<?php echo BASE_URL . 'public/images/LOGO_VEKTOR.svg?v=' . ASSET_VERSION ?>" alt="TataMata"></a>
                 <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>

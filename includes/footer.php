@@ -6,9 +6,9 @@
       <!-- Brand kolona -->
       <div class="col-lg-4 col-md-6">
         <a href="<?php echo BASE_URL; ?>pocetna">
-          <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg" alt="TataMata" class="footer-logo">
+          <img src="<?php echo BASE_URL; ?>public/images/LOGO_VEKTOR.svg?v=<?php echo ASSET_VERSION; ?>" alt="TataMata" class="footer-logo">
         </a>
-        <p class="footer-opis">Online video kursevi matematike za ucenike osnovnih i srednjih skola. Uci sopstvenim tempom, sa razumevanjem.</p>
+        <p class="footer-opis">Online video kursevi matematike za učenike osnovnih i srednjih škola. Nauči matematiku sopstvenim tempom, uz pravo razumevanje.</p>
         <div class="footer-socijalne">
           <a href="https://www.youtube.com/c/TataMATA/" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
           <a href="https://www.instagram.com/tatamata.casovi/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -20,7 +20,7 @@
       <div class="col-lg-2 col-md-3 col-6">
         <h4 class="footer-naslov">Navigacija</h4>
         <ul class="footer-linkovi">
-          <li><a href="<?php echo BASE_URL; ?>pocetna">Pocetna</a></li>
+          <li><a href="<?php echo BASE_URL; ?>pocetna">Početna</a></li>
           <li><a href="<?php echo BASE_URL; ?>kursevi">Kursevi</a></li>
           <li><a href="<?php echo BASE_URL; ?>pocetna#usluge">Usluge</a></li>
           <li><a href="<?php echo BASE_URL; ?>pocetna#faq">FAQ</a></li>
@@ -32,7 +32,7 @@
       <div class="col-lg-2 col-md-3 col-6">
         <h4 class="footer-naslov">Pravno</h4>
         <ul class="footer-linkovi">
-          <li><a href="<?php echo BASE_URL; ?>uslovi-koriscenja" target="_blank">Uslovi koriscenja</a></li>
+          <li><a href="<?php echo BASE_URL; ?>uslovi-koriscenja" target="_blank">Uslovi korišćenja</a></li>
           <li><a href="<?php echo BASE_URL; ?>politika-privatnosti" target="_blank">Politika privatnosti</a></li>
         </ul>
       </div>
