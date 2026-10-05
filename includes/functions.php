@@ -55,15 +55,23 @@ function csrf_protect(): void {
  * Vraća sigurnu fallback putanju ako nije.
  */
 function safe_redirect(string $url, string $fallback = 'pocetna'): string {
-  // Dozvoljeni prefiks - mora biti isti host
-  $baseUrl = (defined('BASE_URL') ? BASE_URL : '/');
-  if (strpos($url, $baseUrl) === 0 || strpos($url, '/') === 0) {
-    // Proveri da ne sadrzi protokol (http:// ili //)
-    if (!preg_match('/^(https?:)?\/\//i', ltrim($url, $baseUrl))) {
-      return $url;
-    }
+  $baseUrl = rtrim(defined('BASE_URL') ? BASE_URL : '/', '/') . '/';
+
+  if (strpos($url, $baseUrl) === 0) {
+    $path = substr($url, strlen($baseUrl));
+  } elseif (strpos($url, '/') === 0) {
+    $path = $url;
+  } else {
+    return $baseUrl . $fallback;
   }
-  return $baseUrl . $fallback;
+
+  // Rezultat se uvek gradi kao BASE_URL + relativna putanja, pa host ne moze da se promeni
+  // (vodeci / i \ se uklanjaju jer browseri "//host" i "/\host" tumace kao drugi domen).
+  $path = ltrim($path, '/\\');
+  if (!preg_match('#^[A-Za-z0-9/_.\-?=&%\#]*$#', $path)) {
+    return $baseUrl . $fallback;
+  }
+  return $baseUrl . $path;
 }
 
 // ============================================================

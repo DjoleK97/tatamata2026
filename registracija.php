@@ -135,7 +135,7 @@ if (isset($_POST['password'])) {
         '. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="fas fa-times"></i></button>
             </div>';
 
-      header("Location: " . clean($_POST['redirect']));
+      header("Location: " . safe_redirect(clean($_POST['redirect'])));
 
       exit;
     }
