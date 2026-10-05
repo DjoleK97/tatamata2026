@@ -90,7 +90,7 @@ CSS dizajn sistem, header/navbar (glassmorphism), footer, početna, prijava, pro
 
 Ništa od ovoga korisnik nije eksplicitno tražio — predloži, ne radi bez dogovora:
 
-1. **Bezbednost — open redirect u registraciji:** `registracija.php` radi `header("Location: " . clean($_POST['redirect']))` bez `safe_redirect()` (prijava ga koristi). Lako za ispraviti.
+1. **Bezbednost — open redirect: ISPRAVLJENO na branchu `fix/open-redirect` (čeka PR/merge u `master`).** `safe_redirect()` u `includes/functions.php` je bila pokvarena (`ltrim` sa `BASE_URL` kao skupom karaktera → `//evil.com` je prolazio), a `registracija.php` je uopšte nije koristila. Sada se redirect uvek gradi kao `BASE_URL` + relativna putanja sa belom listom karaktera; registracija koristi `safe_redirect()`. Testirano samo simulacijom logike (PHP nije instaliran lokalno) — posle deploya proveriti da prijava/registracija i dalje vraćaju na pravu stranicu (početna, `/kurs/{id}`, kursevi).
 2. **Validacija posle uklanjanja `register.js`:** klijentska validacija (provera zauzetog emaila preko AJAX-a, obavezni checkboxovi) više ne postoji. Server proverava ime/prezime/šifre/zauzet email, ali **checkboxovi za uslove korišćenja se ne proveravaju** (ta provera je zakomentarisana u PHP-u). Razmotriti `required` na checkboxovima ili vraćanje PHP provere.
 3. **Tekst greške na prijavi** kaže *Kliknite na "Novi korisnik"* — to dugme se sada zove "Kreiraj nalog".
 4. **Mrtav kod:** CSS za `.auth-panel-levo`, `.auth-stats`, `#progressbar`, `.register-progress-item`; fajl `public/js/register.js`.
